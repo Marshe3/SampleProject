@@ -1,5 +1,9 @@
 #include <iostream>
 #include <string>
+#include <cstdlib> // rand(), srand() 랜덤(주사위)를 섞는 함수
+#include <ctime> // time() 현재 시간을 가져오는 함수
+
+
 using namespace std;
 
 int main() {
@@ -144,16 +148,17 @@ int main() {
 			cout << "You attacked the Goblin (-" << attackDamage << ")\n";
 			if (goblinHp > 0) {
 				// 고블린 반격
-				
+
 				hp -= 30;
 				cout << "=> The Goblin attacked you! (-30)\n";
 			}
 			else {
 				cout << "=> Invalid action! Youstumbled and the Goblin seized the character!\n";
-					hp -= 30;
+				hp -= 30;
 				cout << "=> The Goblin attacked you! (-30)\n";
 			}
 		}
+	}
 
 		cout << "\n";
 		if (hp <= 0) {
@@ -162,7 +167,32 @@ int main() {
 		}
 		else {
 			cout << "[System] You defeated the Goblin!\n";
+			
+			// 난수 생성기 초기화 (매번 다른 아이템이 나오게 함)
+			srand((unsigned int)time(NULL));
+
+			cout << "----------Looting Items----------\n";
+
+			// for문을 사용하여 3번 반복
+			for (int i = 1; i <= 3; i++) {
+				int lootRoll = rand() % 4; //0,1,2,3 중 하나의 난수 생성
+				string itemName;
+
+				// 뽑힌 숫자에 따라 아이템 이름 결정
+				if (lootRoll == 0) {
+					itemName = "GOld";
+				}
+				else if (lootRoll == 1){
+					itemName = "Healing Potion";
+				}
+				else if (lootRoll == 2) {
+					itemName = "Weapon";
+				}
+				else itemName = "Armor";
+				//획득 결과 출력
+				cout << i << ". Get [" << itemName << "]\n";
 		}
+			cout << "-------------------------------\n";
 	}
 
 	return 0;
