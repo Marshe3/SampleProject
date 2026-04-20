@@ -9,6 +9,7 @@ int main() {
 
 	char userName[50];
 	char charactorClass[50];
+	char hardcoreInput;
 
 	//cout << "[ User Name ]\n";
 	//cout << "input your name : ";
@@ -18,17 +19,25 @@ int main() {
 	//cout << "::::::::::Welcome to the D&D World ::::::::::\n";
 	//cout << "User Name : [" << userName << "]!\n";
 	
-	//1. 다양한 자료형의 변수 선언 및 초기값 할당
-	int level = 1;
-	int hp = 100;
-	int mp = 100;
-	float attackSpeed = 5.5f;
-
-	// 스탯 시스템
+		// 스탯 시스템
 	int strength = 50;
 	int dexterity = 50;
 	int vitality = 50;
 	int energy = 50;
+	
+
+	//1. 다양한 자료형의 변수 선언 및 초기값 할당
+	int level = 1;
+	int hp = 100;
+	int mp = 100;
+	float attackSpeed = dexterity / 10.0f;
+	float attackDamage = strength * 0.2f;
+	double movingSpeed = dexterity / 30.0f;
+	
+
+
+
+	
 
 	//  저항 시스템
 	int fireResist = 0;
@@ -48,6 +57,24 @@ int main() {
 	cin >> charactorClass;
 	cout << "\n:::::::::: Welcome to the Sanctuary ::::::::::\n";
 	cout << "User Name : [" << userName << "]\n";
+	cout << "Enable Hardcore Mode? (1) Yes / (2) No : ";
+	cin >> hardcoreInput;
+
+	// 하드코어 모드 여부 설정(if, else if,else 조건문 사용)
+	if (hardcoreInput == '1') {
+		isHardcore = true;
+		cout << "[System]Hardcore Mode Enabled! Be careful, death is permanent!\n";
+	}
+	else if (hardcoreInput == '2') {
+		isHardcore = false;
+		cout << "[System]Standard Mode Enabled! You can respawn after death.\n";
+	}
+	else {
+		cout << "[System]Invalid input. Defaulting to Standard Mode.\n";
+		isHardcore = false;
+	}
+
+
 
 	// 2. 변수에 저장된 데이터 출력
 	cout << "-----------Character Status-----------\n";
@@ -56,6 +83,8 @@ int main() {
 	cout << "HP : " << hp << "\n";
 	cout << "MP : " << mp << "\n";
 	cout << "Attack Speed : " << attackSpeed << "\n";
+	cout << "Attack Damage : " << attackDamage << "\n";
+	cout << "Moving Speed : " << movingSpeed << "\n";
 	cout << "Strength : " << strength << "\n";
 	cout << "Dexterity" << dexterity << "\n";
 	cout << "Vitality : " << vitality << "\n";
