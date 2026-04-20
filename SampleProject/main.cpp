@@ -126,6 +126,44 @@ int main() {
 	cout << "Cold Resistance : " << coldResist << "%\n";
 	cout << "Poison Resistance : " << poisonResist << "%\n";
 	
+	// 기본 전투 시스템 -while문 사용(거짓일 때 까지 무한 루프)
+
+	int goblinHp = 30; //고블린 체력
+	int action;
+	cout << "\n[SYstem] You encountered a Goblin!\n";
+
+	//둘다 체력이 0보다 큰(살아잇는) 동안 무한 반복
+	while (goblinHp > 0 && hp > 0) {
+		cout << "\n[ Goblin HP: " << goblinHp << " I My HP: " << hp << " ]\n";
+		cout << "1. Attack: ";
+		cin >> action;
+
+		if (action == 1) {
+			// 공격
+			goblinHp -= attackDamage;
+			cout << "You attacked the Goblin (-" << attackDamage << ")\n";
+			if (goblinHp > 0) {
+				// 고블린 반격
+				
+				hp -= 30;
+				cout << "=> The Goblin attacked you! (-30)\n";
+			}
+			else {
+				cout << "=> Invalid action! Youstumbled and the Goblin seized the character!\n";
+					hp -= 30;
+				cout << "=> The Goblin attacked you! (-30)\n";
+			}
+		}
+
+		cout << "\n";
+		if (hp <= 0) {
+			cout << "[System]You died...\n";
+			
+		}
+		else {
+			cout << "[System] You defeated the Goblin!\n";
+		}
+	}
 
 	return 0;
 
