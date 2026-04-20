@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 int main() {
@@ -7,9 +8,10 @@ int main() {
 
 	cout << "Hello, World!2" << endl;
 
-	char userName[50];
-	char charactorClass[50];
+	string userName;
+	string charactorClass;
 	char hardcoreInput;
+	int classChoiceInput;
 
 	//cout << "[ User Name ]\n";
 	//cout << "input your name : ";
@@ -53,8 +55,30 @@ int main() {
 	cout << "[ Character Creation ]\n";
 	cout << "Input your name : ";
 	cin >> userName;
+	
+	cout << "Select your Class : \n";
+	cout << "1. Amazon\n2. Assasion\n3. Basrbarian\n4. Druid\n";
+	cout << "5. Necromancer\n6. Paladin\n7. Sorceress\n8. Warlock\n";
 	cout << "Input your Class : ";
-	cin >> charactorClass;
+	cin >> classChoiceInput;
+
+	switch (classChoiceInput)
+	{
+		case 1 : charactorClass = "Amazon"; break;
+		case 2 : charactorClass = "Assasion"; break;
+		case 3 : charactorClass = "Basrbarian"; break;
+		case 4 : charactorClass = "Druid"; break;
+		case 5 : charactorClass = "Necromancer"; break;
+		case 6 : charactorClass = "Paladin"; break;
+		case 7 : charactorClass = "Sorceress"; break;
+		case 8 : charactorClass = "Warlock"; break;
+	default:
+		charactorClass = "Unknown";
+		cout << "[System] Invalid class choice. Defaulting to 'Unknown'.\n";
+		break;
+	}
+
+
 	cout << "\n:::::::::: Welcome to the Sanctuary ::::::::::\n";
 	cout << "User Name : [" << userName << "]\n";
 	cout << "Enable Hardcore Mode? (1) Yes / (2) No : ";
