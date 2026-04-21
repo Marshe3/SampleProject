@@ -226,24 +226,32 @@ int main() {
 	cout << "scores 원소개수 : " << sizeof(scores) / sizeof(scores[0]) << "\n"; // 배열의 원소 개수 계산
 
 	//형변환의  예외상황 2. (주소)연산자 사용
-	cout << "sizeof(&scores) : " << sizeof(&scores) << "\n"; // 배열의 주소값의 크기 (포인터 크기)
-    cout << "scores + 1 : " << scores +1 << "\n";
+	cout << "sizeof(&scores) : " << sizeof(&scores) << "\n"; // 시작주소
+    cout << "scores + 1 : " << scores +1 << "\n"; // +4 원소 단위로 int 만큼
 	cout << "&scores : " << &scores << "\n"; // 시작주소
+	cout << "&scores + 1 : " << &scores + 1 << "\n"; // // +20 배열 전체 단위로 이동
 
-	cout << "&scores + 1 : " << &scores + 1 << "\n"; // &scores는 배열 전체의 주소이므로 +1은 배열 전체 크기만큼 이동
+    system("pause");
+    // for 반복문을 통한 배열 순환
+    int* sPtr = scores;
+    for (int i = 0; i < 5; i++) {
+        cout << "주소 :" << sPtr << " 값 : " << *sPtr << "\n";
+        sPtr++; // +1 포인터 연산으로 다음 원소 주소로 이동
+    }
+
+    system("pause");
 
 
-
-
-    system("pause"); ;
+    system("pause"); 
     cout << BCYAN << "  +----- CHARACTER CREATION -----+\n" << RESET;
     cout << BCYAN << "  | " << BWHITE << " Enter your hero's name... " << BCYAN << "  |\n" << RESET;
     cout << BCYAN << "  +------------------------------+\n" << RESET;
     cout << BYELLOW << "  > Name: " << RESET;
     cin >> userName;
     
+    system("pause");
 
-
+    
     clearScreen();  // [TRANSITION] 페이지 전환 -> 클래스 선택
 
     // #####################################################
