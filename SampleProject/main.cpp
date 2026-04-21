@@ -170,6 +170,10 @@ int main() {
     // 하드코어 모드 여부 변수
     bool isHardcore = true;
 
+	cout << "hp변수의 값 : " << hp << "\n";
+	cout << "hp변수의 주소값 : " << &hp << "\n"; // 변수의 주소값 출력 & 연산자
+	system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+
     cout << BCYAN << "  +----- CHARACTER CREATION -----+\n" << RESET;
     cout << BCYAN << "  | " << BWHITE << " Enter your hero's name... " << BCYAN << "  |\n" << RESET;
     cout << BCYAN << "  +------------------------------+\n" << RESET;
