@@ -182,6 +182,19 @@ int main() {
 	*ptr = 200; // ptr을 통해 hp의 값을 200으로 변경
 	cout << "hp변수의 새로운 값 : " << hp << "\n"; // hp의 값이 변경된 것을 확인
 
+   /// int* ptr2;
+	//cout << "ptr2 (초기값) : " << ptr2 << "\n"; // 초기화되지 않은 포인터 변수의 값 (쓰레기값)
+
+    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+
+    cout << "sizeot(int) : " << sizeof(int) << "bytes \n";
+    cout << "sizeot(int) : " << sizeof(int*) << "bytes \n";
+    cout << "sizeot(int) : " << sizeof(float*) << "bytes \n";
+    cout << "sizeot(int) : " << sizeof(char*) << "bytes \n";
+
+    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+    
+
     cout << BCYAN << "  +----- CHARACTER CREATION -----+\n" << RESET;
     cout << BCYAN << "  | " << BWHITE << " Enter your hero's name... " << BCYAN << "  |\n" << RESET;
     cout << BCYAN << "  +------------------------------+\n" << RESET;
