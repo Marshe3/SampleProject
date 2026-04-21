@@ -205,6 +205,17 @@ int main() {
     cout << BCYAN << "  +------------------------------+\n" << RESET;
     cout << BYELLOW << "  > Name: " << RESET;
     cin >> userName;
+    
+    system("pause");
+
+	int scores[5] = { 85, 92, 78, 95,88 };
+	cout << "&scores[0] :" << &scores[0] << "\n";
+    cout << "&scores[1] :" << &scores[1] << "\n";
+    cout << "&scores[2] :" << &scores[2] << "\n";
+    cout << "&scores[3] :" << &scores[3] << "\n";
+    cout << "&scores[4] :" << &scores[4] << "\n";
+
+    system("pause");
 
     clearScreen();  // [TRANSITION] 페이지 전환 -> 클래스 선택
 
