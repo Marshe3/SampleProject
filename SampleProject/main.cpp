@@ -239,6 +239,17 @@ int main() {
         sPtr++; // +1 포인터 연산으로 다음 원소 주소로 이동
     }
 
+    // Wild Pointer 위험
+	//int* wildPtr; // 초기화되지 않은 포인터 변수 (와일드 포인터)
+	//*wildPtr = 100; // 와일드 포인터를 역참조하여 값을 할당 (정의되지 않은 동작, 프로그램 충돌 가능)
+
+    // 포인트 변수 선언 시 안전한 초기화 예시문
+	int* wildPtr = nullptr; // 와일드 포인터를 nullptr로 초기화하여 안전하게 처리
+	if (wildPtr != nullptr) { // nullptr 체크를 통해 안전하게 역참조 여부 판단
+        *wildPtr = 100; // 안전하게 역참조하여 값을 할당
+    }
+	cout << "wildPtr : " << wildPtr << "\n"; // nullptr 출력
+
     system("pause");
 
 
