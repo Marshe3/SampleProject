@@ -220,9 +220,17 @@ int main() {
 	cout << *"scores+2] :" << *scores + 2 << "\n"; // scores[2]의 값 출력
     system("pause");
 
- 
+ // 형변환의  예외상황 1. sizeof()사용
+    cout << "sizeof(scores) : " << sizeof(scores) << "\n";
+	cout << "sizeof(scores[0]) : " << sizeof(scores[0]) << "\n";
+	cout << "scores 원소개수 : " << sizeof(scores) / sizeof(scores[0]) << "\n"; // 배열의 원소 개수 계산
 
+	//형변환의  예외상황 2. (주소)연산자 사용
+	cout << "sizeof(&scores) : " << sizeof(&scores) << "\n"; // 배열의 주소값의 크기 (포인터 크기)
+    cout << "scores + 1 : " << scores +1 << "\n";
+	cout << "&scores : " << &scores << "\n"; // 시작주소
 
+	cout << "&scores + 1 : " << &scores + 1 << "\n"; // &scores는 배열 전체의 주소이므로 +1은 배열 전체 크기만큼 이동
 
 
 
