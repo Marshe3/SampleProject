@@ -200,22 +200,41 @@ int main() {
     cout << "ptr (현재값) : " << ptr + 2 << "\n";
 
     system("pause");
-    cout << BCYAN << "  +----- CHARACTER CREATION -----+\n" << RESET;
-    cout << BCYAN << "  | " << BWHITE << " Enter your hero's name... " << BCYAN << "  |\n" << RESET;
-    cout << BCYAN << "  +------------------------------+\n" << RESET;
-    cout << BYELLOW << "  > Name: " << RESET;
-    cin >> userName;
-    
-    system("pause");
 
-	int scores[5] = { 85, 92, 78, 95,88 };
-	cout << "&scores[0] :" << &scores[0] << "\n";
+    int scores[5] = { 85, 92, 78, 95,88 };
+    cout << "&scores[0] :" << &scores[0] << "\n";
     cout << "&scores[1] :" << &scores[1] << "\n";
     cout << "&scores[2] :" << &scores[2] << "\n";
     cout << "&scores[3] :" << &scores[3] << "\n";
     cout << "&scores[4] :" << &scores[4] << "\n";
 
     system("pause");
+
+
+    system("pause");
+
+	// 배열 이름이 시작 주소로  형변환(Pointer Decay)되는 예시
+	cout << "scores: " << scores << "\n";
+	cout << "&scores[0]" << &scores[0] << "\n";
+    cout << "scoret[2] :" << scores[2] << "\n";
+	cout << *"scores+2] :" << *scores + 2 << "\n"; // scores[2]의 값 출력
+    system("pause");
+
+ 
+
+
+
+
+
+
+    system("pause"); ;
+    cout << BCYAN << "  +----- CHARACTER CREATION -----+\n" << RESET;
+    cout << BCYAN << "  | " << BWHITE << " Enter your hero's name... " << BCYAN << "  |\n" << RESET;
+    cout << BCYAN << "  +------------------------------+\n" << RESET;
+    cout << BYELLOW << "  > Name: " << RESET;
+    cin >> userName;
+    
+
 
     clearScreen();  // [TRANSITION] 페이지 전환 -> 클래스 선택
 
