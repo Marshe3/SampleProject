@@ -252,6 +252,13 @@ int main() {
 
     system("pause");
 
+    int* danglePtr = new int(100);
+	cout << "삭제(delete) 전 danglePtr : " << danglePtr << "\n"; //100
+    delete danglePtr;//메모리 해제 삭제    
+    //*danglePtr = 200;// 해제된 메모리에 할당하고 있음 Runtime CHARSH
+    danglePtr = nullptr;
+
+    cout<< "danglePtr : " << danglePtr << "\n";
 
     system("pause"); 
     cout << BCYAN << "  +----- CHARACTER CREATION -----+\n" << RESET;
