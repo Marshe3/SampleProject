@@ -147,6 +147,8 @@ int main() {
     char hardcoreInput;
     int classChoiceInput;
 
+
+
     // 스탯 시스템
     int strength = 50;
     int dexterity = 50;
@@ -170,104 +172,108 @@ int main() {
     // 하드코어 모드 여부 변수
     bool isHardcore = true;
 
-	// "&" 연산자와 변수 주소값 출력 예시
-	cout << "hp변수의 값 : " << hp << "\n";
-	cout << "hp변수의 주소값 : " << &hp << "\n"; // 변수의 주소값 출력 & 연산자
-	system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
-
-	// "*" 역참조 연산자와 포인터 변수 예시
-	int* ptr = &hp; // hp 변수의 주소값을 ptr 포인터에 저장
-    cout << "ptr == &hp: " << ptr << "\n";
-	cout << "*ptr 값 : " << *ptr << "\n"; // ptr이 가리키는 주소의 값 출력 (hp의 값)
-	*ptr = 200; // ptr을 통해 hp의 값을 200으로 변경
-	cout << "hp변수의 새로운 값 : " << hp << "\n"; // hp의 값이 변경된 것을 확인
-
-   /// int* ptr2;
-	//cout << "ptr2 (초기값) : " << ptr2 << "\n"; // 초기화되지 않은 포인터 변수의 값 (쓰레기값)
-
-    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
-
-    cout << "sizeot(int) : " << sizeof(int) << "bytes \n";
-    cout << "sizeot(int) : " << sizeof(int*) << "bytes \n";
-    cout << "sizeot(int) : " << sizeof(float*) << "bytes \n";
-    cout << "sizeot(int) : " << sizeof(char*) << "bytes \n";
-
-    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
-    
-	//포인터 연산 (+1 = 자료형 크기만큼 주소 이동)
-	cout << "ptr (현재값) : " << ptr << "\n";
-    cout << "ptr (현재값) : " << ptr + 1 << "\n";
-    cout << "ptr (현재값) : " << ptr + 2 << "\n";
-
-    system("pause");
-
-    int scores[5] = { 85, 92, 78, 95,88 };
-    cout << "&scores[0] :" << &scores[0] << "\n";
-    cout << "&scores[1] :" << &scores[1] << "\n";
-    cout << "&scores[2] :" << &scores[2] << "\n";
-    cout << "&scores[3] :" << &scores[3] << "\n";
-    cout << "&scores[4] :" << &scores[4] << "\n";
-
-    system("pause");
+	// 인벤토리 (0 = 빈칸, 1=Gold, 2=Healing Potion, 3=Weapon, 4=Armor)
+	int gameInventory[5] = { 0, 0, 0, 0, 0 };
 
 
-    system("pause");
+	//// "&" 연산자와 변수 주소값 출력 예시
+	//cout << "hp변수의 값 : " << hp << "\n";
+	//cout << "hp변수의 주소값 : " << &hp << "\n"; // 변수의 주소값 출력 & 연산자
+	//system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 
-	// 배열 이름이 시작 주소로  형변환(Pointer Decay)되는 예시
-	cout << "scores: " << scores << "\n";
-	cout << "&scores[0]" << &scores[0] << "\n";
-    cout << "scoret[2] :" << scores[2] << "\n";
-	cout << *"scores+2] :" << *scores + 2 << "\n"; // scores[2]의 값 출력
-    system("pause");
+	//// "*" 역참조 연산자와 포인터 변수 예시
+	//int* ptr = &hp; // hp 변수의 주소값을 ptr 포인터에 저장
+ //   cout << "ptr == &hp: " << ptr << "\n";
+	//cout << "*ptr 값 : " << *ptr << "\n"; // ptr이 가리키는 주소의 값 출력 (hp의 값)
+	//*ptr = 200; // ptr을 통해 hp의 값을 200으로 변경
+	//cout << "hp변수의 새로운 값 : " << hp << "\n"; // hp의 값이 변경된 것을 확인
 
- // 형변환의  예외상황 1. sizeof()사용
-    cout << "sizeof(scores) : " << sizeof(scores) << "\n";
-	cout << "sizeof(scores[0]) : " << sizeof(scores[0]) << "\n";
-	cout << "scores 원소개수 : " << sizeof(scores) / sizeof(scores[0]) << "\n"; // 배열의 원소 개수 계산
+ //  /// int* ptr2;
+	////cout << "ptr2 (초기값) : " << ptr2 << "\n"; // 초기화되지 않은 포인터 변수의 값 (쓰레기값)
 
-	//형변환의  예외상황 2. (주소)연산자 사용
-	cout << "sizeof(&scores) : " << sizeof(&scores) << "\n"; // 시작주소
-    cout << "scores + 1 : " << scores +1 << "\n"; // +4 원소 단위로 int 만큼
-	cout << "&scores : " << &scores << "\n"; // 시작주소
-	cout << "&scores + 1 : " << &scores + 1 << "\n"; // // +20 배열 전체 단위로 이동
+ //   system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 
-    system("pause");
-    // for 반복문을 통한 배열 순환
-    int* sPtr = scores;
-    for (int i = 0; i < 5; i++) {
-        cout << "주소 :" << sPtr << " 값 : " << *sPtr << "\n";
-        sPtr++; // +1 포인터 연산으로 다음 원소 주소로 이동
-    }
+ //   cout << "sizeot(int) : " << sizeof(int) << "bytes \n";
+ //   cout << "sizeot(int) : " << sizeof(int*) << "bytes \n";
+ //   cout << "sizeot(int) : " << sizeof(float*) << "bytes \n";
+ //   cout << "sizeot(int) : " << sizeof(char*) << "bytes \n";
 
-    // Wild Pointer 위험
-	//int* wildPtr; // 초기화되지 않은 포인터 변수 (와일드 포인터)
-	//*wildPtr = 100; // 와일드 포인터를 역참조하여 값을 할당 (정의되지 않은 동작, 프로그램 충돌 가능)
+ //   system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+ //   
+	////포인터 연산 (+1 = 자료형 크기만큼 주소 이동)
+	//cout << "ptr (현재값) : " << ptr << "\n";
+ //   cout << "ptr (현재값) : " << ptr + 1 << "\n";
+ //   cout << "ptr (현재값) : " << ptr + 2 << "\n";
 
-    // 포인트 변수 선언 시 안전한 초기화 예시문
-	int* wildPtr = nullptr; // 와일드 포인터를 nullptr로 초기화하여 안전하게 처리
-	if (wildPtr != nullptr) { // nullptr 체크를 통해 안전하게 역참조 여부 판단
-        *wildPtr = 100; // 안전하게 역참조하여 값을 할당
-    }
-	cout << "wildPtr : " << wildPtr << "\n"; // nullptr 출력
+ //   system("pause");
 
-    system("pause");
+ //   int scores[5] = { 85, 92, 78, 95,88 };
+ //   cout << "&scores[0] :" << &scores[0] << "\n";
+ //   cout << "&scores[1] :" << &scores[1] << "\n";
+ //   cout << "&scores[2] :" << &scores[2] << "\n";
+ //   cout << "&scores[3] :" << &scores[3] << "\n";
+ //   cout << "&scores[4] :" << &scores[4] << "\n";
 
-    int* danglePtr = new int(100);
-	cout << "삭제(delete) 전 danglePtr : " << danglePtr << "\n"; //100
-    delete danglePtr;//메모리 해제 삭제    
-    //*danglePtr = 200;// 해제된 메모리에 할당하고 있음 Runtime CHARSH
-    danglePtr = nullptr;
+ //   system("pause");
 
-    cout<< "danglePtr : " << danglePtr << "\n";
 
-    system("pause"); 
-    cout << BCYAN << "  +----- CHARACTER CREATION -----+\n" << RESET;
-    cout << BCYAN << "  | " << BWHITE << " Enter your hero's name... " << BCYAN << "  |\n" << RESET;
-    cout << BCYAN << "  +------------------------------+\n" << RESET;
-    cout << BYELLOW << "  > Name: " << RESET;
-    cin >> userName;
-    
-    system("pause");
+ //   system("pause");
+
+	//// 배열 이름이 시작 주소로  형변환(Pointer Decay)되는 예시
+	//cout << "scores: " << scores << "\n";
+	//cout << "&scores[0]" << &scores[0] << "\n";
+ //   cout << "scoret[2] :" << scores[2] << "\n";
+	//cout << *"scores+2] :" << *scores + 2 << "\n"; // scores[2]의 값 출력
+ //   system("pause");
+
+ //// 형변환의  예외상황 1. sizeof()사용
+ //   cout << "sizeof(scores) : " << sizeof(scores) << "\n";
+	//cout << "sizeof(scores[0]) : " << sizeof(scores[0]) << "\n";
+	//cout << "scores 원소개수 : " << sizeof(scores) / sizeof(scores[0]) << "\n"; // 배열의 원소 개수 계산
+
+	////형변환의  예외상황 2. (주소)연산자 사용
+	//cout << "sizeof(&scores) : " << sizeof(&scores) << "\n"; // 시작주소
+ //   cout << "scores + 1 : " << scores +1 << "\n"; // +4 원소 단위로 int 만큼
+	//cout << "&scores : " << &scores << "\n"; // 시작주소
+	//cout << "&scores + 1 : " << &scores + 1 << "\n"; // // +20 배열 전체 단위로 이동
+
+ //   system("pause");
+ //   // for 반복문을 통한 배열 순환
+ //   int* sPtr = scores;
+ //   for (int i = 0; i < 5; i++) {
+ //       cout << "주소 :" << sPtr << " 값 : " << *sPtr << "\n";
+ //       sPtr++; // +1 포인터 연산으로 다음 원소 주소로 이동
+ //   }
+
+ //   // Wild Pointer 위험
+	////int* wildPtr; // 초기화되지 않은 포인터 변수 (와일드 포인터)
+	////*wildPtr = 100; // 와일드 포인터를 역참조하여 값을 할당 (정의되지 않은 동작, 프로그램 충돌 가능)
+
+ //   // 포인트 변수 선언 시 안전한 초기화 예시문
+	//int* wildPtr = nullptr; // 와일드 포인터를 nullptr로 초기화하여 안전하게 처리
+	//if (wildPtr != nullptr) { // nullptr 체크를 통해 안전하게 역참조 여부 판단
+ //       *wildPtr = 100; // 안전하게 역참조하여 값을 할당
+ //   }
+	//cout << "wildPtr : " << wildPtr << "\n"; // nullptr 출력
+
+ //   system("pause");
+
+ //   int* danglePtr = new int(100);
+	//cout << "삭제(delete) 전 danglePtr : " << danglePtr << "\n"; //100
+ //   delete danglePtr;//메모리 해제 삭제    
+ //   //*danglePtr = 200;// 해제된 메모리에 할당하고 있음 Runtime CHARSH
+ //   danglePtr = nullptr;
+
+ //   cout<< "danglePtr : " << danglePtr << "\n";
+
+ //   system("pause"); 
+ //   cout << BCYAN << "  +----- CHARACTER CREATION -----+\n" << RESET;
+ //   cout << BCYAN << "  | " << BWHITE << " Enter your hero's name... " << BCYAN << "  |\n" << RESET;
+ //   cout << BCYAN << "  +------------------------------+\n" << RESET;
+ //   cout << BYELLOW << "  > Name: " << RESET;
+ //   cin >> userName;
+ //   
+ //   system("pause");
 
     
     clearScreen();  // [TRANSITION] 페이지 전환 -> 클래스 선택
@@ -511,41 +517,39 @@ int main() {
         cout << BMAGENTA << "  +---- LOOT DROPPED ----+\n" << RESET;
         Sleep(400);
 
+        int* invPtr = gameInventory; //invPtr -> gameInventory 시작주소 [0]
+        
+        // 포인터로 인벤토리에 랜덤 숫자 저장
         for (int i = 1; i <= 3; i++) {
-            int lootRoll = rand() % 4;
-            string itemName;
-            string itemColor;
-            string itemIcon;
-
-            if (lootRoll == 0) {
-                itemName = "Gold";
-                itemColor = BYELLOW;
-                itemIcon = "$";
-            }
-            else if (lootRoll == 1) {
-                itemName = "Healing Potion";
-                itemColor = BRED;
-                itemIcon = "+";
-            }
-            else if (lootRoll == 2) {
-                itemName = "Weapon";
-                itemColor = BCYAN;
-                itemIcon = "/";
-            }
-            else {
-                itemName = "Armor";
-                itemColor = BWHITE;
-                itemIcon = "[";
-            }
-            cout << "   " << BMAGENTA << "[" << i << "]" << RESET
-                << " " << itemColor << itemIcon << "  " << itemName << RESET << "\n";
-            Sleep(500);
+            *invPtr = rand() % 4 + 1; // 역참조로 현재 칸에 아이템 코드를 저장하고자 함
+            invPtr++; // 다음 칸으로 포인터 이동
         }
-        cout << BMAGENTA << "  +----------------------+\n" << RESET;
+        cout << BYELLOW << "  ==========================================\n";
+           //포인터 순회로 인벤토리 출력(5칸)
+		invPtr = gameInventory; // invPtr을 다시 시작주소로 초기화
+        int slot = 0;
+
+        while (invPtr < gameInventory + 5) { // invPtr이 배열 끝 주소보다 작은 동안 반복
+            
+            string itemName;
+            if (*invPtr == 1) itemName = "Gold";
+            else if(*invPtr == 2) itemName = "Healing Potion";
+            else if (*invPtr == 3) itemName = "Weapon";
+            else if (*invPtr == 4) itemName = "Armor";
+			else itemName = "Empty Slot";
+
+
+            cout << " > Slot " << slot <<  "[" << itemName << "]\n";
+            invPtr++; // 다음 칸으로 포인터 이동
+        }
+        cout << BYELLOW << "  ==========================================\n";
     }
+
     cout << "\n";
 
     waitForEnter();
+
+    
 
     return 0;
 }
