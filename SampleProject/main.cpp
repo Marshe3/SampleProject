@@ -194,7 +194,12 @@ int main() {
 
     system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
     
+	//포인터 연산 (+1 = 자료형 크기만큼 주소 이동)
+	cout << "ptr (현재값) : " << ptr << "\n";
+    cout << "ptr (현재값) : " << ptr + 1 << "\n";
+    cout << "ptr (현재값) : " << ptr + 2 << "\n";
 
+    system("pause");
     cout << BCYAN << "  +----- CHARACTER CREATION -----+\n" << RESET;
     cout << BCYAN << "  | " << BWHITE << " Enter your hero's name... " << BCYAN << "  |\n" << RESET;
     cout << BCYAN << "  +------------------------------+\n" << RESET;
