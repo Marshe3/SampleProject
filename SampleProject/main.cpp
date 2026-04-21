@@ -170,9 +170,17 @@ int main() {
     // 하드코어 모드 여부 변수
     bool isHardcore = true;
 
+	// "&" 연산자와 변수 주소값 출력 예시
 	cout << "hp변수의 값 : " << hp << "\n";
 	cout << "hp변수의 주소값 : " << &hp << "\n"; // 변수의 주소값 출력 & 연산자
 	system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+
+	// "*" 역참조 연산자와 포인터 변수 예시
+	int* ptr = &hp; // hp 변수의 주소값을 ptr 포인터에 저장
+    cout << "ptr == &hp: " << ptr << "\n";
+	cout << "*ptr 값 : " << *ptr << "\n"; // ptr이 가리키는 주소의 값 출력 (hp의 값)
+	*ptr = 200; // ptr을 통해 hp의 값을 200으로 변경
+	cout << "hp변수의 새로운 값 : " << hp << "\n"; // hp의 값이 변경된 것을 확인
 
     cout << BCYAN << "  +----- CHARACTER CREATION -----+\n" << RESET;
     cout << BCYAN << "  | " << BWHITE << " Enter your hero's name... " << BCYAN << "  |\n" << RESET;
