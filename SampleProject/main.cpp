@@ -115,6 +115,16 @@ void printGoblinSprite(int currentHp, int maxHp) {
     }
 }
 
+
+// Call By Value 복사본 전달 -> 원본은 변경되지 않음
+void PreviewCritical(float attackDamage) {
+    attackDamage *= 2; // Parameter 복사본만 2배, 원본 변수는 그대로
+	cout << "크리티컬 예상 데미지: " << attackDamage << "\n";
+}
+
+
+
+
 int main() {
     enableConsoleStyles();
 
@@ -174,6 +184,13 @@ int main() {
 
 	// 인벤토리 (0 = 빈칸, 1=Gold, 2=Healing Potion, 3=Weapon, 4=Armor)
 	int gameInventory[5] = { 0, 0, 0, 0, 0 };
+
+
+    // Call By Value: 복사본 전달 -> 원본의 불변 확인
+	cout << "원본 attackDamage : " << attackDamage << "\n";
+    PreviewCritical(attackDamage);
+	cout << "호출 이후 attackDamage : " << attackDamage << "\n"; // 원본은 변경되지 않음
+	system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 
 
 	//// "&" 연산자와 변수 주소값 출력 예시
@@ -266,16 +283,14 @@ int main() {
 
  //   cout<< "danglePtr : " << danglePtr << "\n";
 
- //   system("pause"); 
- //   cout << BCYAN << "  +----- CHARACTER CREATION -----+\n" << RESET;
- //   cout << BCYAN << "  | " << BWHITE << " Enter your hero's name... " << BCYAN << "  |\n" << RESET;
- //   cout << BCYAN << "  +------------------------------+\n" << RESET;
- //   cout << BYELLOW << "  > Name: " << RESET;
- //   cin >> userName;
- //   
- //   system("pause");
-
+    cout << BCYAN << "  +----- CHARACTER CREATION -----+\n" << RESET;
+    cout << BCYAN << "  | " << BWHITE << " Enter your hero's name... " << BCYAN << "  |\n" << RESET;
+    cout << BCYAN << "  +------------------------------+\n" << RESET;
+    cout << BYELLOW << "  > Name: " << RESET;
+    cin >> userName;
     
+    waitForEnter();
+
     clearScreen();  // [TRANSITION] 페이지 전환 -> 클래스 선택
 
     // #####################################################
