@@ -127,6 +127,13 @@ void LevelUp(int* level) {
     (*level)++; // 포인터를 역참조하여 원본 변수의 값을 증가시킴
 }
 
+// Call By Reference: 참조자(Alias) 전달 -> 원본 변경 가능 (C++에서만 지원)
+void LevelUpRef(int& level) {
+    level++;
+	
+   
+}
+
 
 
 int main() {
@@ -196,19 +203,25 @@ int main() {
 	cout << "호출 이후 attackDamage : " << attackDamage << "\n"; // 원본은 변경되지 않음
 	system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 
-    // Call By Address: 주소값 전달 -> 원본 변경 가능
-    cout << "레벨업 전 level : " << level << "\n";
-    LevelUp(&level);
-    cout << "레벨업 후 level : " << level << "\n"; // 원본이 변경됨
-    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+ //   // Call By Address: 주소값 전달 -> 원본 변경 가능
+ //   cout << "레벨업 전 level : " << level << "\n";
+ //   LevelUp(&level);
+ //   cout << "레벨업 후 level : " << level << "\n"; // 원본이 변경됨
+ //   system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 
-	// Call By Reference: 별칭(Alias) 전달 -> 원본 변경 가능 (C++에서만 지원)
-	int& levelRef = level; // level의 별칭인 levelRef 선언
-	levelRef++; // levelRef를 통해 level의 값을 증가시킴
-    cout << "levelRef++ 후 원본 level : " << level << "\n";
-    cout << "levelRef++ 과 level 동일한값? : " << levelRef << "\n"; 
-    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+	//// Call By Reference: 별칭(Alias) 전달 -> 원본 변경 가능 (C++에서만 지원)
+	//int& levelRef = level; // level의 별칭인 levelRef 선언
+	//levelRef++; // levelRef를 통해 level의 값을 증가시킴
+ //   cout << "levelRef++ 후 원본 level : " << level << "\n";
+ //   cout << "levelRef++ 과 level 동일한값? : " << levelRef << "\n"; 
+ //   system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 
+	// Call By Reference 함수 & 호출, * 없이 수정
+    cout << "levelRef 호출 후 원본 level : " << level << "\n";
+    LevelUpRef(level);
+	cout << "LevelUpRef(level) 호출 후 원본 level : " << level << "\n"; // 원본이 변경됨
+	system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+	
 
 	// "&" 연산자와 변수 주소값 출력 예시
 	cout << "hp변수의 값 : " << hp << "\n";
