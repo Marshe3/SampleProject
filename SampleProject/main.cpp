@@ -134,6 +134,12 @@ void LevelUpRef(int& level) {
    
 }
 
+//const 참조자 : 읽기 전용 참조자, 원본 변경 불가
+void PrintLevel(const int& level) {
+    cout << "현재 레벨 : " << level << "\n";
+    // level++; // 컴파일 에러: const 참조자는 원본 변경 불가
+}
+
 
 
 int main() {
@@ -222,6 +228,9 @@ int main() {
 	cout << "LevelUpRef(level) 호출 후 원본 level : " << level << "\n"; // 원본이 변경됨
 	system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 	
+	// const 참조자 : 읽기 전용 참조자, 원본 변경 불가
+	PrintLevel(level);
+    system("pause");
 
 	// "&" 연산자와 변수 주소값 출력 예시
 	cout << "hp변수의 값 : " << hp << "\n";
