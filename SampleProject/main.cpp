@@ -122,8 +122,10 @@ void PreviewCritical(float attackDamage) {
 	cout << "크리티컬 예상 데미지: " << attackDamage << "\n";
 }
 
-
-
+// Call By Address: 주소값 전달 -> 원본 변경 가능
+void LevelUp(int* level) {
+    (*level)++; // 포인터를 역참조하여 원본 변수의 값을 증가시킴
+}
 
 int main() {
     enableConsoleStyles();
@@ -192,56 +194,58 @@ int main() {
 	cout << "호출 이후 attackDamage : " << attackDamage << "\n"; // 원본은 변경되지 않음
 	system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 
+    // Call By Address: 주소값 전달 -> 원본 변경 가능
+    cout << "레벨업 전 level : " << level << "\n";
+    LevelUp(&level);
+    cout << "레벨업 후 level : " << level << "\n"; // 원본이 변경됨
+    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 
-	//// "&" 연산자와 변수 주소값 출력 예시
-	//cout << "hp변수의 값 : " << hp << "\n";
-	//cout << "hp변수의 주소값 : " << &hp << "\n"; // 변수의 주소값 출력 & 연산자
-	//system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+	// "&" 연산자와 변수 주소값 출력 예시
+	cout << "hp변수의 값 : " << hp << "\n";
+	cout << "hp변수의 주소값 : " << &hp << "\n"; // 변수의 주소값 출력 & 연산자
+	system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 
-	//// "*" 역참조 연산자와 포인터 변수 예시
-	//int* ptr = &hp; // hp 변수의 주소값을 ptr 포인터에 저장
- //   cout << "ptr == &hp: " << ptr << "\n";
-	//cout << "*ptr 값 : " << *ptr << "\n"; // ptr이 가리키는 주소의 값 출력 (hp의 값)
-	//*ptr = 200; // ptr을 통해 hp의 값을 200으로 변경
-	//cout << "hp변수의 새로운 값 : " << hp << "\n"; // hp의 값이 변경된 것을 확인
+	// "*" 역참조 연산자와 포인터 변수 예시
+	int* ptr = &hp; // hp 변수의 주소값을 ptr 포인터에 저장
+    cout << "ptr == &hp: " << ptr << "\n";
+	cout << "*ptr 값 : " << *ptr << "\n"; // ptr이 가리키는 주소의 값 출력 (hp의 값)
+	*ptr = 200; // ptr을 통해 hp의 값을 200으로 변경
+	cout << "hp변수의 새로운 값 : " << hp << "\n"; // hp의 값이 변경된 것을 확인
 
- //  /// int* ptr2;
-	////cout << "ptr2 (초기값) : " << ptr2 << "\n"; // 초기화되지 않은 포인터 변수의 값 (쓰레기값)
+    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 
- //   system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+    cout << "sizeof(int) : " << sizeof(int) << "bytes \n";
+    cout << "sizeof(int*) : " << sizeof(int*) << "bytes \n";
+    cout << "sizeof(float*) : " << sizeof(float*) << "bytes \n";
+    cout << "sizeof(char*) : " << sizeof(char*) << "bytes \n";
 
- //   cout << "sizeot(int) : " << sizeof(int) << "bytes \n";
- //   cout << "sizeot(int) : " << sizeof(int*) << "bytes \n";
- //   cout << "sizeot(int) : " << sizeof(float*) << "bytes \n";
- //   cout << "sizeot(int) : " << sizeof(char*) << "bytes \n";
+    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+    
+	//포인터 연산 (+1 = 자료형 크기만큼 주소 이동)
+	cout << "ptr (현재값) : " << ptr << "\n";
+    cout << "ptr (+1) : " << ptr + 1 << "\n";
+    cout << "ptr (+2) : " << ptr + 2 << "\n";
 
- //   system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
- //   
-	////포인터 연산 (+1 = 자료형 크기만큼 주소 이동)
-	//cout << "ptr (현재값) : " << ptr << "\n";
- //   cout << "ptr (현재값) : " << ptr + 1 << "\n";
- //   cout << "ptr (현재값) : " << ptr + 2 << "\n";
+    system("pause");
 
- //   system("pause");
+    int scores[5] = { 85, 92, 78, 95,88 };
+    cout << "&scores[0] :" << &scores[0] << "\n";
+    cout << "&scores[1] :" << &scores[1] << "\n";
+    cout << "&scores[2] :" << &scores[2] << "\n";
+    cout << "&scores[3] :" << &scores[3] << "\n";
+    cout << "&scores[4] :" << &scores[4] << "\n";
 
- //   int scores[5] = { 85, 92, 78, 95,88 };
- //   cout << "&scores[0] :" << &scores[0] << "\n";
- //   cout << "&scores[1] :" << &scores[1] << "\n";
- //   cout << "&scores[2] :" << &scores[2] << "\n";
- //   cout << "&scores[3] :" << &scores[3] << "\n";
- //   cout << "&scores[4] :" << &scores[4] << "\n";
-
- //   system("pause");
+    system("pause");
 
 
- //   system("pause");
+    system("pause");
 
-	//// 배열 이름이 시작 주소로  형변환(Pointer Decay)되는 예시
-	//cout << "scores: " << scores << "\n";
-	//cout << "&scores[0]" << &scores[0] << "\n";
- //   cout << "scoret[2] :" << scores[2] << "\n";
-	//cout << *"scores+2] :" << *scores + 2 << "\n"; // scores[2]의 값 출력
- //   system("pause");
+	// 배열 이름이 시작 주소로  형변환(Pointer Decay)되는 예시
+	cout << "scores: " << scores << "\n";
+	cout << "&scores[0]" << &scores[0] << "\n";
+    cout << "scores[2] :" << scores[2] << "\n";
+	cout << "*(scores + 2) :" << *(scores + 2) << "\n"; // scores[2]의 값 출력
+    system("pause");
 
  //// 형변환의  예외상황 1. sizeof()사용
  //   cout << "sizeof(scores) : " << sizeof(scores) << "\n";
