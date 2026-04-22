@@ -130,8 +130,12 @@ void LevelUp(int* level) {
 // Call By Reference: 참조자(Alias) 전달 -> 원본 변경 가능 (C++에서만 지원)
 void LevelUpRef(int& level) {
     level++;
-	
-   
+}
+
+// Call By Reference: 예시) 참조자 전달 -> 실제 크리티컬 데미지 적용
+void ApplyCriticalDamage(int& goblinHp, float attackDamage) {
+	int criticalDamage = attackDamage * 2; // 크리티컬 데미지 계산
+	goblinHp -= criticalDamage; // 원본 goblinHp 변수에 크리티컬 데미지 적용
 }
 
 //const 참조자 : 읽기 전용 참조자, 원본 변경 불가
@@ -477,7 +481,7 @@ int main() {
             << "  " << BRED << hp << "/100\n" << RESET;
         cout << GRAY << "  ------------------------------------------\n" << RESET;
         cout << "\n";
-        cout << "   " << BYELLOW << "[1] Attack\n" << RESET;
+        cout << "   " << BYELLOW << "[1] Attack      [2] Critical Attack\n" << RESET;
         cout << BYELLOW << "  > Action: " << RESET;
         cin >> action;
 
@@ -501,6 +505,30 @@ int main() {
                 Sleep(1300);
             }
         }
+        else if (action == 2) {
+            PreviewCritical(attackDamage);
+            ApplyCriticalDamage(goblinHp, attackDamage);
+
+            cout << "\n";
+            cout << "   " << BMAGENTA << ">> CRITICAL STRIKE! " << BYELLOW << "You deal massive damage!" << RESET
+                << RED << " (-" << attackDamage * 2 << ")\n" << RESET;
+            Sleep(500);
+
+            if (goblinHp > 0) {
+                hp -= 30;
+                cout << "   " << BRED << ">> The Goblin retaliates!" << RESET
+                    << RED << "  (-30)\n" << RESET;
+                Sleep(900);
+            }
+            else {
+                cout << "   " << BGREEN << ">> The Goblin is slain by your powerful blow!\n" << RESET;
+                hp -= 30;
+                cout << "   " << BRED << ">> The Goblin's final struggle hits you!" << RESET
+                    << RED << "  (-30)\n" << RESET;
+                Sleep(1300);
+            }
+        }
+
     }
 
     clearScreen();  // [TRANSITION] 페이지 전환 -> 전투 결과
@@ -590,9 +618,14 @@ int main() {
 			else itemName = "Empty Slot";
 
 
-            cout << " > Slot " << slot <<  "[" << itemName << "]\n";
+            cout << " > Slot " << slot <<  " [" << itemName << "]\n";
             invPtr++; // 다음 칸으로 포인터 이동
+            slot++;   // 슬롯 번호 증가
         }
+
+        // 레벨업
+        LevelUpRef(level);
+        PrintLevel(level);
         cout << BYELLOW << "  ==========================================\n";
     }
 
