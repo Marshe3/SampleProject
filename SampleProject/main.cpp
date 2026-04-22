@@ -115,6 +115,37 @@ void printGoblinSprite(int currentHp, int maxHp) {
     }
 }
 
+
+// Call By Value 복사본 전달 -> 원본은 변경되지 않음
+void PreviewCritical(float attackDamage) {
+    attackDamage *= 2; // Parameter 복사본만 2배, 원본 변수는 그대로
+	cout << "크리티컬 예상 데미지: " << attackDamage << "\n";
+}
+
+// Call By Address: 주소값 전달 -> 원본 변경 가능
+void LevelUp(int* level) {
+    (*level)++; // 포인터를 역참조하여 원본 변수의 값을 증가시킴
+}
+
+// Call By Reference: 참조자(Alias) 전달 -> 원본 변경 가능 (C++에서만 지원)
+void LevelUpRef(int& level) {
+    level++;
+}
+
+// Call By Reference: 예시) 참조자 전달 -> 실제 크리티컬 데미지 적용
+void ApplyCriticalDamage(int& goblinHp, float attackDamage) {
+	int criticalDamage = attackDamage * 2; // 크리티컬 데미지 계산
+	goblinHp -= criticalDamage; // 원본 goblinHp 변수에 크리티컬 데미지 적용
+}
+
+//const 참조자 : 읽기 전용 참조자, 원본 변경 불가
+void PrintLevel(const int& level) {
+    cout << "현재 레벨 : " << level << "\n";
+    // level++; // 컴파일 에러: const 참조자는 원본 변경 불가
+}
+
+
+
 int main() {
     enableConsoleStyles();
 
@@ -176,55 +207,81 @@ int main() {
 	int gameInventory[5] = { 0, 0, 0, 0, 0 };
 
 
-	//// "&" 연산자와 변수 주소값 출력 예시
-	//cout << "hp변수의 값 : " << hp << "\n";
-	//cout << "hp변수의 주소값 : " << &hp << "\n"; // 변수의 주소값 출력 & 연산자
-	//system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+    // Call By Value: 복사본 전달 -> 원본의 불변 확인
+	cout << "원본 attackDamage : " << attackDamage << "\n";
+    PreviewCritical(attackDamage);
+	cout << "호출 이후 attackDamage : " << attackDamage << "\n"; // 원본은 변경되지 않음
+	system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 
-	//// "*" 역참조 연산자와 포인터 변수 예시
-	//int* ptr = &hp; // hp 변수의 주소값을 ptr 포인터에 저장
- //   cout << "ptr == &hp: " << ptr << "\n";
-	//cout << "*ptr 값 : " << *ptr << "\n"; // ptr이 가리키는 주소의 값 출력 (hp의 값)
-	//*ptr = 200; // ptr을 통해 hp의 값을 200으로 변경
-	//cout << "hp변수의 새로운 값 : " << hp << "\n"; // hp의 값이 변경된 것을 확인
-
- //  /// int* ptr2;
-	////cout << "ptr2 (초기값) : " << ptr2 << "\n"; // 초기화되지 않은 포인터 변수의 값 (쓰레기값)
-
+ //   // Call By Address: 주소값 전달 -> 원본 변경 가능
+ //   cout << "레벨업 전 level : " << level << "\n";
+ //   LevelUp(&level);
+ //   cout << "레벨업 후 level : " << level << "\n"; // 원본이 변경됨
  //   system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 
- //   cout << "sizeot(int) : " << sizeof(int) << "bytes \n";
- //   cout << "sizeot(int) : " << sizeof(int*) << "bytes \n";
- //   cout << "sizeot(int) : " << sizeof(float*) << "bytes \n";
- //   cout << "sizeot(int) : " << sizeof(char*) << "bytes \n";
-
+	//// Call By Reference: 별칭(Alias) 전달 -> 원본 변경 가능 (C++에서만 지원)
+	//int& levelRef = level; // level의 별칭인 levelRef 선언
+	//levelRef++; // levelRef를 통해 level의 값을 증가시킴
+ //   cout << "levelRef++ 후 원본 level : " << level << "\n";
+ //   cout << "levelRef++ 과 level 동일한값? : " << levelRef << "\n"; 
  //   system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
- //   
-	////포인터 연산 (+1 = 자료형 크기만큼 주소 이동)
-	//cout << "ptr (현재값) : " << ptr << "\n";
- //   cout << "ptr (현재값) : " << ptr + 1 << "\n";
- //   cout << "ptr (현재값) : " << ptr + 2 << "\n";
 
- //   system("pause");
+	// Call By Reference 함수 & 호출, * 없이 수정
+    cout << "levelRef 호출 후 원본 level : " << level << "\n";
+    LevelUpRef(level);
+	cout << "LevelUpRef(level) 호출 후 원본 level : " << level << "\n"; // 원본이 변경됨
+	system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+	
+	// const 참조자 : 읽기 전용 참조자, 원본 변경 불가
+	PrintLevel(level);
+    system("pause");
 
- //   int scores[5] = { 85, 92, 78, 95,88 };
- //   cout << "&scores[0] :" << &scores[0] << "\n";
- //   cout << "&scores[1] :" << &scores[1] << "\n";
- //   cout << "&scores[2] :" << &scores[2] << "\n";
- //   cout << "&scores[3] :" << &scores[3] << "\n";
- //   cout << "&scores[4] :" << &scores[4] << "\n";
+	// "&" 연산자와 변수 주소값 출력 예시
+	cout << "hp변수의 값 : " << hp << "\n";
+	cout << "hp변수의 주소값 : " << &hp << "\n"; // 변수의 주소값 출력 & 연산자
+	system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 
- //   system("pause");
+	// "*" 역참조 연산자와 포인터 변수 예시
+	int* ptr = &hp; // hp 변수의 주소값을 ptr 포인터에 저장
+    cout << "ptr == &hp: " << ptr << "\n";
+	cout << "*ptr 값 : " << *ptr << "\n"; // ptr이 가리키는 주소의 값 출력 (hp의 값)
+	*ptr = 200; // ptr을 통해 hp의 값을 200으로 변경
+	cout << "hp변수의 새로운 값 : " << hp << "\n"; // hp의 값이 변경된 것을 확인
+
+    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+
+    cout << "sizeof(int) : " << sizeof(int) << "bytes \n";
+    cout << "sizeof(int*) : " << sizeof(int*) << "bytes \n";
+    cout << "sizeof(float*) : " << sizeof(float*) << "bytes \n";
+    cout << "sizeof(char*) : " << sizeof(char*) << "bytes \n";
+
+    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+    
+	//포인터 연산 (+1 = 자료형 크기만큼 주소 이동)
+	cout << "ptr (현재값) : " << ptr << "\n";
+    cout << "ptr (+1) : " << ptr + 1 << "\n";
+    cout << "ptr (+2) : " << ptr + 2 << "\n";
+
+    system("pause");
+
+    int scores[5] = { 85, 92, 78, 95,88 };
+    cout << "&scores[0] :" << &scores[0] << "\n";
+    cout << "&scores[1] :" << &scores[1] << "\n";
+    cout << "&scores[2] :" << &scores[2] << "\n";
+    cout << "&scores[3] :" << &scores[3] << "\n";
+    cout << "&scores[4] :" << &scores[4] << "\n";
+
+    system("pause");
 
 
- //   system("pause");
+    system("pause");
 
-	//// 배열 이름이 시작 주소로  형변환(Pointer Decay)되는 예시
-	//cout << "scores: " << scores << "\n";
-	//cout << "&scores[0]" << &scores[0] << "\n";
- //   cout << "scoret[2] :" << scores[2] << "\n";
-	//cout << *"scores+2] :" << *scores + 2 << "\n"; // scores[2]의 값 출력
- //   system("pause");
+	// 배열 이름이 시작 주소로  형변환(Pointer Decay)되는 예시
+	cout << "scores: " << scores << "\n";
+	cout << "&scores[0]" << &scores[0] << "\n";
+    cout << "scores[2] :" << scores[2] << "\n";
+	cout << "*(scores + 2) :" << *(scores + 2) << "\n"; // scores[2]의 값 출력
+    system("pause");
 
  //// 형변환의  예외상황 1. sizeof()사용
  //   cout << "sizeof(scores) : " << sizeof(scores) << "\n";
@@ -266,16 +323,14 @@ int main() {
 
  //   cout<< "danglePtr : " << danglePtr << "\n";
 
- //   system("pause"); 
- //   cout << BCYAN << "  +----- CHARACTER CREATION -----+\n" << RESET;
- //   cout << BCYAN << "  | " << BWHITE << " Enter your hero's name... " << BCYAN << "  |\n" << RESET;
- //   cout << BCYAN << "  +------------------------------+\n" << RESET;
- //   cout << BYELLOW << "  > Name: " << RESET;
- //   cin >> userName;
- //   
- //   system("pause");
-
+    cout << BCYAN << "  +----- CHARACTER CREATION -----+\n" << RESET;
+    cout << BCYAN << "  | " << BWHITE << " Enter your hero's name... " << BCYAN << "  |\n" << RESET;
+    cout << BCYAN << "  +------------------------------+\n" << RESET;
+    cout << BYELLOW << "  > Name: " << RESET;
+    cin >> userName;
     
+    waitForEnter();
+
     clearScreen();  // [TRANSITION] 페이지 전환 -> 클래스 선택
 
     // #####################################################
@@ -426,7 +481,7 @@ int main() {
             << "  " << BRED << hp << "/100\n" << RESET;
         cout << GRAY << "  ------------------------------------------\n" << RESET;
         cout << "\n";
-        cout << "   " << BYELLOW << "[1] Attack\n" << RESET;
+        cout << "   " << BYELLOW << "[1] Attack      [2] Critical Attack\n" << RESET;
         cout << BYELLOW << "  > Action: " << RESET;
         cin >> action;
 
@@ -450,6 +505,30 @@ int main() {
                 Sleep(1300);
             }
         }
+        else if (action == 2) {
+            PreviewCritical(attackDamage);
+            ApplyCriticalDamage(goblinHp, attackDamage);
+
+            cout << "\n";
+            cout << "   " << BMAGENTA << ">> CRITICAL STRIKE! " << BYELLOW << "You deal massive damage!" << RESET
+                << RED << " (-" << attackDamage * 2 << ")\n" << RESET;
+            Sleep(500);
+
+            if (goblinHp > 0) {
+                hp -= 30;
+                cout << "   " << BRED << ">> The Goblin retaliates!" << RESET
+                    << RED << "  (-30)\n" << RESET;
+                Sleep(900);
+            }
+            else {
+                cout << "   " << BGREEN << ">> The Goblin is slain by your powerful blow!\n" << RESET;
+                hp -= 30;
+                cout << "   " << BRED << ">> The Goblin's final struggle hits you!" << RESET
+                    << RED << "  (-30)\n" << RESET;
+                Sleep(1300);
+            }
+        }
+
     }
 
     clearScreen();  // [TRANSITION] 페이지 전환 -> 전투 결과
@@ -539,9 +618,14 @@ int main() {
 			else itemName = "Empty Slot";
 
 
-            cout << " > Slot " << slot <<  "[" << itemName << "]\n";
+            cout << " > Slot " << slot <<  " [" << itemName << "]\n";
             invPtr++; // 다음 칸으로 포인터 이동
+            slot++;   // 슬롯 번호 증가
         }
+
+        // 레벨업
+        LevelUpRef(level);
+        PrintLevel(level);
         cout << BYELLOW << "  ==========================================\n";
     }
 
