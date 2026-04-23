@@ -175,6 +175,95 @@ public:
 };
 
 
+// player 클래스
+
+class Player
+{
+private: 
+    // 기본 정보
+    string name;
+    string characterClass;
+    bool isHardcore;
+    
+    // 기본 능력치
+    int strength, dexterity, vitality, energy;
+    
+    // 파생 능력치
+    int level;
+    int hp, maxHp;
+    int mp, maxMp;
+    float attackDamage;
+    float attackSpeed;
+    double movingSpeed;
+    
+    // 저항 능력치
+    int fireResist, coldResist, lightningResist, poisonResist;
+    
+    // 인벤토리
+    int inventory[5];
+    
+public:
+    Player(const string& name, const string& characterClass, bool isHardcore) // 외부입력 값 세팅 초기화
+        : name(name), characterClass(characterClass), isHardcore(isHardcore), //단순 값 세팅 초기화
+    strength(50), dexterity(50), vitality(50), energy(50),
+    level(1),
+    fireResist(0), coldResist(0), lightningResist(0), poisonResist(0)
+    {
+        maxHp = vitality * 2; // 계산이 필요한 값 세팅 초기화
+        hp = maxHp;
+        maxMp = (int)energy * 1.5f;
+        mp = maxMp;
+        attackDamage = strength * 0.2f;
+        attackSpeed = dexterity / 10.0f;
+        movingSpeed = dexterity / 30.0f;
+        for (int i = 0; i < 5; i++) inventory[i] = 0;
+    }
+    // Getters
+    string GetName() const { return name; }
+    string GetCharacterClass() const { return characterClass; }
+    bool GetIsHardcore() const { return isHardcore; }
+    int GetStrength() const { return strength; }
+    int GetDexterity() const { return dexterity; }
+    int GetVitality() const { return vitality; }
+    int GetEnergy() const { return energy; }
+    int GetLevel() const { return level; }
+    int GetHp() const { return hp; }
+    int GetMaxHp() const { return maxHp; }
+    int GetMp() const { return maxMp; }
+    int GetMaxMp() const { return maxMp; }
+    int GetfireResist() const { return fireResist; }
+    int GetColdResist() const { return coldResist; }
+    int GetLightningResist() const { return lightningResist; }
+    int GetPoisonResist() const { return poisonResist; }
+    float GetAttackDamage() const { return attackDamage; }
+    float GetAttackSpeed() const { return attackSpeed; }
+    float GetMovingSpeed() const { return movingSpeed; }
+
+    int* GetInventory() { return inventory; }
+    
+    // 기능(함수)
+    bool isAlive() const { return hp > 0; }
+    void TakeDamage(int damage)
+    {
+        hp -= damage;
+        if (hp <= 0) hp = 0;
+    }
+    int Attack() const { return attackDamage;}
+    int CriticalAttack() const { return (int)(attackDamage * 2); }
+    void LevelUP() { level++; }
+    
+    void PreviewCritical () const
+    {
+        float preview = attackDamage * 2;
+        cout << "크리티컬 예상 데미지: " << preview << "\n";
+        
+    }
+    
+    void PrintLevel()const
+    {
+        cout << "현재레벨 : " << level << "\n";
+    }
+};
 
 
 
@@ -208,152 +297,15 @@ int main() {
     string userName;
     string charactorClass;
     char hardcoreInput;
-    int classChoiceInput;
-
-
-
-    // 스탯 시스템
-    int strength = 50;
-    int dexterity = 50;
-    int vitality = 50;
-    int energy = 50;
-
-    // 1. 다양한 자료형의 변수 선언 및 초기값 할당
-    int level = 1;
-    int hp = 100;
-    int mp = 100;
-    float attackSpeed = dexterity / 10.0f;
-    float attackDamage = strength * 0.2f;
-    double movingSpeed = dexterity / 30.0f;
-
-    // 저항 시스템
-    int fireResist = 0;
-    int lightningResist = 0;
-    int coldResist = 0;
-    int poisonResist = 0;
-
-    // 하드코어 모드 여부 변수
+     int classChoiceInput;
     bool isHardcore = true;
 
-	// 인벤토리 (0 = 빈칸, 1=Gold, 2=Healing Potion, 3=Weapon, 4=Armor)
-	int gameInventory[5] = { 0, 0, 0, 0, 0 };
 
-
- //    // Call By Value: 복사본 전달 -> 원본의 불변 확인
-	// cout << "원본 attackDamage : " << attackDamage << "\n";
- //    PreviewCritical(attackDamage);
-	// cout << "호출 이후 attackDamage : " << attackDamage << "\n"; // 원본은 변경되지 않음
-	// system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
-
- //   // Call By Address: 주소값 전달 -> 원본 변경 가능
- //   cout << "레벨업 전 level : " << level << "\n";
- //   LevelUp(&level);
- //   cout << "레벨업 후 level : " << level << "\n"; // 원본이 변경됨
- //   system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
-
-	//// Call By Reference: 별칭(Alias) 전달 -> 원본 변경 가능 (C++에서만 지원)
-	//int& levelRef = level; // level의 별칭인 levelRef 선언
-	//levelRef++; // levelRef를 통해 level의 값을 증가시킴
- //   cout << "levelRef++ 후 원본 level : " << level << "\n";
- //   cout << "levelRef++ 과 level 동일한값? : " << levelRef << "\n"; 
- //   system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
-
-	// // Call By Reference 함수 & 호출, * 없이 수정
- //    cout << "levelRef 호출 후 원본 level : " << level << "\n";
- //    LevelUpRef(level);
-	// cout << "LevelUpRef(level) 호출 후 원본 level : " << level << "\n"; // 원본이 변경됨
-	// system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
-	
-	// // const 참조자 : 읽기 전용 참조자, 원본 변경 불가
-	// PrintLevel(level);
- //    system("pause");
- //
-	// // "&" 연산자와 변수 주소값 출력 예시
-	// cout << "hp변수의 값 : " << hp << "\n";
-	// cout << "hp변수의 주소값 : " << &hp << "\n"; // 변수의 주소값 출력 & 연산자
-	// system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
-
-	// "*" 역참조 연산자와 포인터 변수 예시
-	// int* ptr = &hp; // hp 변수의 주소값을 ptr 포인터에 저장
- //    cout << "ptr == &hp: " << ptr << "\n";
-	// cout << "*ptr 값 : " << *ptr << "\n"; // ptr이 가리키는 주소의 값 출력 (hp의 값)
-	// *ptr = 200; // ptr을 통해 hp의 값을 200으로 변경
-	// cout << "hp변수의 새로운 값 : " << hp << "\n"; // hp의 값이 변경된 것을 확인
-
- //    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
- //
- //    cout << "sizeof(int) : " << sizeof(int) << "bytes \n";
- //    cout << "sizeof(int*) : " << sizeof(int*) << "bytes \n";
- //    cout << "sizeof(float*) : " << sizeof(float*) << "bytes \n";
- //    cout << "sizeof(char*) : " << sizeof(char*) << "bytes \n";
- //
- //    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
- //    
-	// //포인터 연산 (+1 = 자료형 크기만큼 주소 이동)
-	// cout << "ptr (현재값) : " << ptr << "\n";
- //    cout << "ptr (+1) : " << ptr + 1 << "\n";
- //    cout << "ptr (+2) : " << ptr + 2 << "\n";
+    
 
     system("pause");
 
-    // int scores[5] = { 85, 92, 78, 95,88 };
-    // cout << "&scores[0] :" << &scores[0] << "\n";
-    // cout << "&scores[1] :" << &scores[1] << "\n";
-    // cout << "&scores[2] :" << &scores[2] << "\n";
-    // cout << "&scores[3] :" << &scores[3] << "\n";
-    // cout << "&scores[4] :" << &scores[4] << "\n";
-
- //    system("pause");
- //
- //
- //    system("pause");
- //
-	// // 배열 이름이 시작 주소로  형변환(Pointer Decay)되는 예시
-	// cout << "scores: " << scores << "\n";
-	// cout << "&scores[0]" << &scores[0] << "\n";
- //    cout << "scores[2] :" << scores[2] << "\n";
-	// cout << "*(scores + 2) :" << *(scores + 2) << "\n"; // scores[2]의 값 출력
- //    system("pause");
-
- //// 형변환의  예외상황 1. sizeof()사용
- //   cout << "sizeof(scores) : " << sizeof(scores) << "\n";
-	//cout << "sizeof(scores[0]) : " << sizeof(scores[0]) << "\n";
-	//cout << "scores 원소개수 : " << sizeof(scores) / sizeof(scores[0]) << "\n"; // 배열의 원소 개수 계산
-
-	////형변환의  예외상황 2. (주소)연산자 사용
-	//cout << "sizeof(&scores) : " << sizeof(&scores) << "\n"; // 시작주소
- //   cout << "scores + 1 : " << scores +1 << "\n"; // +4 원소 단위로 int 만큼
-	//cout << "&scores : " << &scores << "\n"; // 시작주소
-	//cout << "&scores + 1 : " << &scores + 1 << "\n"; // // +20 배열 전체 단위로 이동
-
- //   system("pause");
- //   // for 반복문을 통한 배열 순환
- //   int* sPtr = scores;
- //   for (int i = 0; i < 5; i++) {
- //       cout << "주소 :" << sPtr << " 값 : " << *sPtr << "\n";
- //       sPtr++; // +1 포인터 연산으로 다음 원소 주소로 이동
- //   }
-
- //   // Wild Pointer 위험
-	////int* wildPtr; // 초기화되지 않은 포인터 변수 (와일드 포인터)
-	////*wildPtr = 100; // 와일드 포인터를 역참조하여 값을 할당 (정의되지 않은 동작, 프로그램 충돌 가능)
-
- //   // 포인트 변수 선언 시 안전한 초기화 예시문
-	//int* wildPtr = nullptr; // 와일드 포인터를 nullptr로 초기화하여 안전하게 처리
-	//if (wildPtr != nullptr) { // nullptr 체크를 통해 안전하게 역참조 여부 판단
- //       *wildPtr = 100; // 안전하게 역참조하여 값을 할당
- //   }
-	//cout << "wildPtr : " << wildPtr << "\n"; // nullptr 출력
-
- //   system("pause");
-
- //   int* danglePtr = new int(100);
-	//cout << "삭제(delete) 전 danglePtr : " << danglePtr << "\n"; //100
- //   delete danglePtr;//메모리 해제 삭제    
- //   //*danglePtr = 200;// 해제된 메모리에 할당하고 있음 Runtime CHARSH
- //   danglePtr = nullptr;
-
- //   cout<< "danglePtr : " << danglePtr << "\n";
+ 
 
     cout << BCYAN << "  +----- CHARACTER CREATION -----+\n" << RESET;
     cout << BCYAN << "  | " << BWHITE << " Enter your hero's name... " << BCYAN << "  |\n" << RESET;
@@ -436,32 +388,37 @@ int main() {
     Sleep(1500);
 
     clearScreen();  // [TRANSITION] 페이지 전환 -> 캐릭터 스탯 시트
-
+    
+    // Player 객체 생성 - 입력받은 값들로 초기화, 스탯은 내부에서 자동 계산됨
+    Player player(userName, charactorClass, hardcoreInput);
+    
+    
+    
     // #####################################################
     // # [PAGE 4] 캐릭터 스탯 시트
     // #####################################################
     cout << "\n";
     cout << BYELLOW << "  =============== CHARACTER STATUS ===============\n" << RESET;
     cout << "\n";
-    cout << "   " << BWHITE << "Name   : " << RESET << BCYAN << userName << RESET << "\n";
-    cout << "   " << BWHITE << "Class  : " << RESET << BMAGENTA << charactorClass << RESET << "\n";
-    cout << "   " << BWHITE << "Level  : " << RESET << BYELLOW << level << RESET << "\n";
+    cout << "   " << BWHITE << "Name   : " << RESET << BCYAN << player.GetName() << RESET << "\n";
+    cout << "   " << BWHITE << "Class  : " << RESET << BMAGENTA << player.GetCharacterClass() << RESET << "\n";
+    cout << "   " << BWHITE << "Level  : " << RESET << BYELLOW << player.GetLevel() << RESET << "\n";
     cout << "\n";
-    cout << "   " << BRED << "HP  " << RESET << makeBar(hp, 100, 20, BRED)
-        << "  " << BRED << hp << "/100\n" << RESET;
-    cout << "   " << BBLUE << "MP  " << RESET << makeBar(mp, 100, 20, BBLUE)
-        << "  " << BBLUE << mp << "/100\n" << RESET;
+    cout << "   " << BRED << "HP  " << RESET << makeBar(player.GetHp(), player.GetMaxHp(), 20, BRED)
+        << "  " << BRED << player.GetHp() << "/100\n" << RESET;
+    cout << "   " << BBLUE << "MP  " << RESET << makeBar(player.GetMp(), player.GetMaxMp(), 20, BBLUE)
+        << "  " << BBLUE << player.GetMp() << "/100\n" << RESET;
     cout << "\n";
     cout << GRAY << "   -- Combat --\n" << RESET;
-    cout << "   " << BWHITE << "Attack Speed  : " << RESET << attackSpeed << "\n";
-    cout << "   " << BWHITE << "Attack Damage : " << RESET << attackDamage << "\n";
-    cout << "   " << BWHITE << "Moving Speed  : " << RESET << movingSpeed << "\n";
+    cout << "   " << BWHITE << "Attack Speed  : " << RESET << player.GetAttackSpeed() << "\n";
+    cout << "   " << BWHITE << "Attack Damage : " << RESET << player.GetAttackDamage() << "\n";
+    cout << "   " << BWHITE << "Moving Speed  : " << RESET << player.GetMovingSpeed() << "\n";
     cout << "\n";
     cout << GRAY << "   -- Attributes --\n" << RESET;
-    cout << "   " << BRED << "STR " << RESET << strength << "   ";
-    cout << BGREEN << "DEX " << RESET << dexterity << "\n";
-    cout << "   " << BYELLOW << "VIT " << RESET << vitality << "   ";
-    cout << BCYAN << "ENG " << RESET << energy << "\n";
+    cout << "   " << BRED << "STR " << RESET << player.GetStrength() << RESET << "\n   ";
+    cout << BGREEN << "DEX " << RESET << player.GetDexterity() << "\n";
+    cout << "   " << BYELLOW << "VIT " << RESET << player.GetVitality() << "   ";
+    cout << BCYAN << "ENG " << RESET << player.GetEnergy() << "\n";
     cout << "\n";
     cout << "   " << BWHITE << "Hardcore Mode : " << RESET
         << (isHardcore ? BRED "ON " : BGREEN "OFF") << RESET
@@ -469,15 +426,15 @@ int main() {
     cout << BYELLOW << "  ================================================\n" << RESET;
 
     cout << "\n";
-    cout << GRAY << "  [Memory Check] int  type size : " << sizeof(hp) << " bytes\n" << RESET;
+    cout << GRAY << "  [Memory Check] int  type size : " << sizeof(player.GetHp()) << " bytes\n" << RESET;
     cout << GRAY << "  [Memory Check] bool type size : " << sizeof(isHardcore) << " bytes\n" << RESET;
     cout << "\n";
     
     cout << BMAGENTA << "  =============== RESISTANCES ===============\n" << RESET;
-    cout << "   " << BRED << "  Fire      " << RESET << fireResist << "%\n";
-    cout << "   " << BYELLOW << "  Lightning " << RESET << lightningResist << "%\n";
-    cout << "   " << BCYAN << "  Cold      " << RESET << coldResist << "%\n";
-    cout << "   " << BGREEN << "  Poison    " << RESET << poisonResist << "%\n";
+    cout << "   " << BRED << "  Fire      " << RESET << player.GetfireResist() << "%\n";
+    cout << "   " << BYELLOW << "  Lightning " << RESET << player.GetLightningResist() << "%\n";
+    cout << "   " << BCYAN << "  Cold      " << RESET << player.GetColdResist() << "%\n";
+    cout << "   " << BGREEN << "  Poison    " << RESET << player.GetPoisonResist() << "%\n";
     cout << BMAGENTA << "  ===========================================\n" << RESET;
 
     waitForEnter();
@@ -501,7 +458,7 @@ int main() {
     cout << "\n";
     Sleep(2000);
 
-    while (goblin.isAlive() && hp > 0) {
+    while (goblin.isAlive() && player.isAlive()) {
         clearScreen();
 
         cout << "\n";
@@ -512,8 +469,8 @@ int main() {
         cout << GRAY << "  ------------------------------------------\n" << RESET;
         cout << "   " << BGREEN << "Goblin " << RESET << makeBar(goblin.GetHp(), goblin.GetMaxHp(), 15, BGREEN)
             << "  " << BGREEN << goblin.GetHp() << "/" << goblin.GetMaxHp() << "\n" << RESET;
-        cout << "   " << BRED << "You    " << RESET << makeBar(hp, 100, 15, BRED)
-            << "  " << BRED << hp << "/100\n" << RESET;
+        cout << "   " << BRED << "You    " << RESET << makeBar(player.GetHp(), player.GetMaxHp(), 15, BRED)
+            << "  " << BRED << player.GetHp() << "/100\n" << RESET;
         cout << GRAY << "  ------------------------------------------\n" << RESET;
         cout << "\n";
         cout << "   " << BYELLOW << "[1] Attack      [2] Critical Attack\n" << RESET;
@@ -521,43 +478,43 @@ int main() {
         cin >> action;
 
         if (action == 1) {
-            goblin.TakeDamage((int)attackDamage);
+            goblin.TakeDamage((int)player.GetAttackDamage());
             cout << "\n";
             cout << "   " << BYELLOW << ">> You strike the Goblin!" << RESET
-                << RED << "  (-" << attackDamage << ")\n" << RESET;
+                << RED << "  (-" << player.GetAttackDamage() << ")\n" << RESET;
             Sleep(500);
-            if (goblin.isAlive() && hp > 0) {
-                hp -= goblin.Attack();
+            if (goblin.isAlive() && player.isAlive()) {
+                player.TakeDamage(goblin.Attack());
                 cout << "   " << BRED << ">> The Goblin retaliates!" << RESET
                     << RED << "  (-30)\n" << RESET;
                 Sleep(900);
             }
             else {
                 cout << "   " << BGREEN << ">> The Goblin is slain!\n" << RESET;
-                hp -= 30;
+                player.TakeDamage(30);
                 cout << "   " << BRED << ">> The Goblin attacked you!" << RESET
                     << RED << "  (-30)\n" << RESET;
                 Sleep(1300);
             }
         }
         else if (action == 2) {
-            PreviewCritical(attackDamage);
-            goblin.TakeDamage((int)attackDamage * 2);
+            PreviewCritical(player.CriticalAttack());
+            goblin.TakeDamage((int)player.CriticalAttack());
 
             cout << "\n";
             cout << "   " << BMAGENTA << ">> CRITICAL STRIKE! " << BYELLOW << "You deal massive damage!" << RESET
-                << RED << " (-" << attackDamage * 2 << ")\n" << RESET;
+                << RED << " (-" << player.CriticalAttack() << ")\n" << RESET;
             Sleep(500);
 
             if (goblin.isAlive()) {
-                hp -= 30;
+                player.TakeDamage(30);
                 cout << "   " << BRED << ">> The Goblin retaliates!" << RESET
                     << RED << "  (-30)\n" << RESET;
                 Sleep(900);
             }
             else {
                 cout << "   " << BGREEN << ">> The Goblin is slain by your powerful blow!\n" << RESET;
-                hp -= goblin.Attack();
+                player.TakeDamage(goblin.Attack());
                 cout << "   " << BRED << ">> The Goblin's final struggle hits you!" << RESET
                     << RED << "  (-30)\n" << RESET;
                 Sleep(1300);
@@ -572,7 +529,7 @@ int main() {
     // # [PAGE 6] 전투 결과 + 루팅
     // #####################################################
     cout << "\n";
-    if (hp <= 0) {
+    if (player.GetHp() <= 0) {
         cout << BRED << R"(
                 _____
                /     \
@@ -631,7 +588,7 @@ int main() {
         cout << BMAGENTA << "  +---- LOOT DROPPED ----+\n" << RESET;
         Sleep(400);
 
-        int* invPtr = gameInventory; //invPtr -> gameInventory 시작주소 [0]
+        int* invPtr = player.GetInventory(); //invPtr -> gameInventory 시작주소 [0]
         
         // 포인터로 인벤토리에 랜덤 숫자 저장
         for (int i = 1; i <= 3; i++) {
@@ -640,10 +597,10 @@ int main() {
         }
         cout << BYELLOW << "  ==========================================\n";
            //포인터 순회로 인벤토리 출력(5칸)
-		invPtr = gameInventory; // invPtr을 다시 시작주소로 초기화
+		invPtr = player.GetInventory(); // invPtr을 다시 시작주소로 초기화
         int slot = 0;
 
-        while (invPtr < gameInventory + 5) { // invPtr이 배열 끝 주소보다 작은 동안 반복
+        while (invPtr < player.GetInventory() + 5) { // invPtr이 배열 끝 주소보다 작은 동안 반복
             
             string itemName;
             if (*invPtr == 1) itemName = "Gold";
@@ -659,8 +616,8 @@ int main() {
         }
 
         // 레벨업
-        LevelUpRef(level);
-        PrintLevel(level);
+        player.LevelUP();
+        player.PrintLevel();
         cout << BYELLOW << "  ==========================================\n";
     }
 
