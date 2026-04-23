@@ -145,6 +145,38 @@ void PrintLevel(const int& level) {
 }
 
 
+// Monster 클래스
+class Monster
+{
+    
+private:
+    int hp, maxHp;
+    int attackDamage;
+    
+public:
+    Monster(int initHp, int atk) : hp(initHp), maxHp(initHp), attackDamage(atk) 
+    {
+        cout << "[몬스터 등장!] HP :" << hp << " / ATK: " << attackDamage << "\n";
+    }
+    ~Monster()
+    {
+        cout << "[몬스터 소멸!]\n"; // 소멸자 확인용 로그
+        
+    }
+    int GetHp() const { return hp; }
+    int GetMaxHp() const { return maxHp; }
+    bool isAlive() const { return hp > 0; }
+    void TakeDamage(int damage)
+    {
+        hp -= damage;
+        if (hp < 0) hp = 0; // 음수 방지
+    }
+    int Attack()const {return attackDamage;}
+};
+
+
+
+
 
 int main() {
     enableConsoleStyles();
@@ -207,11 +239,11 @@ int main() {
 	int gameInventory[5] = { 0, 0, 0, 0, 0 };
 
 
-    // Call By Value: 복사본 전달 -> 원본의 불변 확인
-	cout << "원본 attackDamage : " << attackDamage << "\n";
-    PreviewCritical(attackDamage);
-	cout << "호출 이후 attackDamage : " << attackDamage << "\n"; // 원본은 변경되지 않음
-	system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+ //    // Call By Value: 복사본 전달 -> 원본의 불변 확인
+	// cout << "원본 attackDamage : " << attackDamage << "\n";
+ //    PreviewCritical(attackDamage);
+	// cout << "호출 이후 attackDamage : " << attackDamage << "\n"; // 원본은 변경되지 않음
+	// system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 
  //   // Call By Address: 주소값 전달 -> 원본 변경 가능
  //   cout << "레벨업 전 level : " << level << "\n";
@@ -226,62 +258,62 @@ int main() {
  //   cout << "levelRef++ 과 level 동일한값? : " << levelRef << "\n"; 
  //   system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 
-	// Call By Reference 함수 & 호출, * 없이 수정
-    cout << "levelRef 호출 후 원본 level : " << level << "\n";
-    LevelUpRef(level);
-	cout << "LevelUpRef(level) 호출 후 원본 level : " << level << "\n"; // 원본이 변경됨
-	system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+	// // Call By Reference 함수 & 호출, * 없이 수정
+ //    cout << "levelRef 호출 후 원본 level : " << level << "\n";
+ //    LevelUpRef(level);
+	// cout << "LevelUpRef(level) 호출 후 원본 level : " << level << "\n"; // 원본이 변경됨
+	// system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 	
-	// const 참조자 : 읽기 전용 참조자, 원본 변경 불가
-	PrintLevel(level);
-    system("pause");
-
-	// "&" 연산자와 변수 주소값 출력 예시
-	cout << "hp변수의 값 : " << hp << "\n";
-	cout << "hp변수의 주소값 : " << &hp << "\n"; // 변수의 주소값 출력 & 연산자
-	system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+	// // const 참조자 : 읽기 전용 참조자, 원본 변경 불가
+	// PrintLevel(level);
+ //    system("pause");
+ //
+	// // "&" 연산자와 변수 주소값 출력 예시
+	// cout << "hp변수의 값 : " << hp << "\n";
+	// cout << "hp변수의 주소값 : " << &hp << "\n"; // 변수의 주소값 출력 & 연산자
+	// system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
 
 	// "*" 역참조 연산자와 포인터 변수 예시
-	int* ptr = &hp; // hp 변수의 주소값을 ptr 포인터에 저장
-    cout << "ptr == &hp: " << ptr << "\n";
-	cout << "*ptr 값 : " << *ptr << "\n"; // ptr이 가리키는 주소의 값 출력 (hp의 값)
-	*ptr = 200; // ptr을 통해 hp의 값을 200으로 변경
-	cout << "hp변수의 새로운 값 : " << hp << "\n"; // hp의 값이 변경된 것을 확인
+	// int* ptr = &hp; // hp 변수의 주소값을 ptr 포인터에 저장
+ //    cout << "ptr == &hp: " << ptr << "\n";
+	// cout << "*ptr 값 : " << *ptr << "\n"; // ptr이 가리키는 주소의 값 출력 (hp의 값)
+	// *ptr = 200; // ptr을 통해 hp의 값을 200으로 변경
+	// cout << "hp변수의 새로운 값 : " << hp << "\n"; // hp의 값이 변경된 것을 확인
 
-    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
-
-    cout << "sizeof(int) : " << sizeof(int) << "bytes \n";
-    cout << "sizeof(int*) : " << sizeof(int*) << "bytes \n";
-    cout << "sizeof(float*) : " << sizeof(float*) << "bytes \n";
-    cout << "sizeof(char*) : " << sizeof(char*) << "bytes \n";
-
-    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
-    
-	//포인터 연산 (+1 = 자료형 크기만큼 주소 이동)
-	cout << "ptr (현재값) : " << ptr << "\n";
-    cout << "ptr (+1) : " << ptr + 1 << "\n";
-    cout << "ptr (+2) : " << ptr + 2 << "\n";
-
-    system("pause");
-
-    int scores[5] = { 85, 92, 78, 95,88 };
-    cout << "&scores[0] :" << &scores[0] << "\n";
-    cout << "&scores[1] :" << &scores[1] << "\n";
-    cout << "&scores[2] :" << &scores[2] << "\n";
-    cout << "&scores[3] :" << &scores[3] << "\n";
-    cout << "&scores[4] :" << &scores[4] << "\n";
+ //    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+ //
+ //    cout << "sizeof(int) : " << sizeof(int) << "bytes \n";
+ //    cout << "sizeof(int*) : " << sizeof(int*) << "bytes \n";
+ //    cout << "sizeof(float*) : " << sizeof(float*) << "bytes \n";
+ //    cout << "sizeof(char*) : " << sizeof(char*) << "bytes \n";
+ //
+ //    system("pause"); // 변수 값과 주소값을 확인하기 위한 일시정지
+ //    
+	// //포인터 연산 (+1 = 자료형 크기만큼 주소 이동)
+	// cout << "ptr (현재값) : " << ptr << "\n";
+ //    cout << "ptr (+1) : " << ptr + 1 << "\n";
+ //    cout << "ptr (+2) : " << ptr + 2 << "\n";
 
     system("pause");
 
+    // int scores[5] = { 85, 92, 78, 95,88 };
+    // cout << "&scores[0] :" << &scores[0] << "\n";
+    // cout << "&scores[1] :" << &scores[1] << "\n";
+    // cout << "&scores[2] :" << &scores[2] << "\n";
+    // cout << "&scores[3] :" << &scores[3] << "\n";
+    // cout << "&scores[4] :" << &scores[4] << "\n";
 
-    system("pause");
-
-	// 배열 이름이 시작 주소로  형변환(Pointer Decay)되는 예시
-	cout << "scores: " << scores << "\n";
-	cout << "&scores[0]" << &scores[0] << "\n";
-    cout << "scores[2] :" << scores[2] << "\n";
-	cout << "*(scores + 2) :" << *(scores + 2) << "\n"; // scores[2]의 값 출력
-    system("pause");
+ //    system("pause");
+ //
+ //
+ //    system("pause");
+ //
+	// // 배열 이름이 시작 주소로  형변환(Pointer Decay)되는 예시
+	// cout << "scores: " << scores << "\n";
+	// cout << "&scores[0]" << &scores[0] << "\n";
+ //    cout << "scores[2] :" << scores[2] << "\n";
+	// cout << "*(scores + 2) :" << *(scores + 2) << "\n"; // scores[2]의 값 출력
+ //    system("pause");
 
  //// 형변환의  예외상황 1. sizeof()사용
  //   cout << "sizeof(scores) : " << sizeof(scores) << "\n";
@@ -361,6 +393,7 @@ int main() {
     case 5: charactorClass = "Necromancer"; break;
     case 6: charactorClass = "Paladin";     break;
     case 7: charactorClass = "Sorceress";   break;
+        
     case 8: charactorClass = "Warlock";     break;
     default:
         charactorClass = "Unknown";
@@ -439,7 +472,7 @@ int main() {
     cout << GRAY << "  [Memory Check] int  type size : " << sizeof(hp) << " bytes\n" << RESET;
     cout << GRAY << "  [Memory Check] bool type size : " << sizeof(isHardcore) << " bytes\n" << RESET;
     cout << "\n";
-
+    
     cout << BMAGENTA << "  =============== RESISTANCES ===============\n" << RESET;
     cout << "   " << BRED << "  Fire      " << RESET << fireResist << "%\n";
     cout << "   " << BYELLOW << "  Lightning " << RESET << lightningResist << "%\n";
@@ -453,30 +486,32 @@ int main() {
     // #####################################################
     // # [PAGE 5] 전투 시스템
     // #####################################################
-    int goblinHp = 30;  // 고블린 체력
-    int goblinMaxHp = 30;
+    // 생성자 호출
+    Monster goblin(30, 10);
+    
+   
     int action;
 
     cout << "\n";
     cout << BRED << "  >> ====== ENEMY ENCOUNTERED ====== <<\n" << RESET;
-    printGoblinSprite(goblinHp, goblinMaxHp);
+    printGoblinSprite(goblin.GetHp(), goblin.GetMaxHp());
     cout << "\n";
     cout << BGREEN << "      A wild " << BOLD << "Goblin" << RESET
         << BGREEN << " emerges from the shadows!\n" << RESET;
     cout << "\n";
     Sleep(2000);
 
-    while (goblinHp > 0 && hp > 0) {
+    while (goblin.isAlive() && hp > 0) {
         clearScreen();
 
         cout << "\n";
         cout << BRED << "  >> ========== BATTLE ========== <<\n" << RESET;
 
-        printGoblinSprite(goblinHp, goblinMaxHp);
+        printGoblinSprite(goblin.GetHp(), goblin.GetMaxHp());
 
         cout << GRAY << "  ------------------------------------------\n" << RESET;
-        cout << "   " << BGREEN << "Goblin " << RESET << makeBar(goblinHp, goblinMaxHp, 15, BGREEN)
-            << "  " << BGREEN << goblinHp << "/" << goblinMaxHp << "\n" << RESET;
+        cout << "   " << BGREEN << "Goblin " << RESET << makeBar(goblin.GetHp(), goblin.GetMaxHp(), 15, BGREEN)
+            << "  " << BGREEN << goblin.GetHp() << "/" << goblin.GetMaxHp() << "\n" << RESET;
         cout << "   " << BRED << "You    " << RESET << makeBar(hp, 100, 15, BRED)
             << "  " << BRED << hp << "/100\n" << RESET;
         cout << GRAY << "  ------------------------------------------\n" << RESET;
@@ -486,13 +521,13 @@ int main() {
         cin >> action;
 
         if (action == 1) {
-            goblinHp -= attackDamage;
+            goblin.TakeDamage((int)attackDamage);
             cout << "\n";
             cout << "   " << BYELLOW << ">> You strike the Goblin!" << RESET
                 << RED << "  (-" << attackDamage << ")\n" << RESET;
             Sleep(500);
-            if (goblinHp > 0) {
-                hp -= 30;
+            if (goblin.isAlive() && hp > 0) {
+                hp -= goblin.Attack();
                 cout << "   " << BRED << ">> The Goblin retaliates!" << RESET
                     << RED << "  (-30)\n" << RESET;
                 Sleep(900);
@@ -507,14 +542,14 @@ int main() {
         }
         else if (action == 2) {
             PreviewCritical(attackDamage);
-            ApplyCriticalDamage(goblinHp, attackDamage);
+            goblin.TakeDamage((int)attackDamage * 2);
 
             cout << "\n";
             cout << "   " << BMAGENTA << ">> CRITICAL STRIKE! " << BYELLOW << "You deal massive damage!" << RESET
                 << RED << " (-" << attackDamage * 2 << ")\n" << RESET;
             Sleep(500);
 
-            if (goblinHp > 0) {
+            if (goblin.isAlive()) {
                 hp -= 30;
                 cout << "   " << BRED << ">> The Goblin retaliates!" << RESET
                     << RED << "  (-30)\n" << RESET;
@@ -522,12 +557,12 @@ int main() {
             }
             else {
                 cout << "   " << BGREEN << ">> The Goblin is slain by your powerful blow!\n" << RESET;
-                hp -= 30;
+                hp -= goblin.Attack();
                 cout << "   " << BRED << ">> The Goblin's final struggle hits you!" << RESET
                     << RED << "  (-30)\n" << RESET;
                 Sleep(1300);
             }
-        }
+        } 
 
     }
 
