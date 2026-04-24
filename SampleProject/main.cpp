@@ -5,6 +5,7 @@
 #include <limits>    // [UI] numeric_limits - 입력 버퍼 처리용
 #include "Player.h"
 #include "Monster.h"
+#include "Battle.h"
 
 // [UI] windows.h가 max/min을 매크로로 정의해서 std::numeric_limits::max()와 충돌함
 //      -> NOMINMAX를 먼저 정의해서 해당 매크로가 로드되지 않도록 차단
@@ -42,10 +43,7 @@ void enableConsoleStyles() {
     SetConsoleMode(hOut, dwMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 }
 
-// [UI] 화면을 깨끗하게 지우는 함수
-void clearScreen() {
-    cout << "\033[2J\033[H\033[3J";
-}
+
 
 // [UI] "엔터를 눌러 계속" 프롬프트
 void waitForEnter() {
@@ -54,75 +52,15 @@ void waitForEnter() {
     cin.get();
 }
 
-// [UI] HP/MP 게이지 바 문자열을 만드는 헬퍼 함수
-string makeBar(int current, int maxVal, int width, const string& color) {
-    if (maxVal <= 0) maxVal = 1;
-    int filled = (current * width) / maxVal;
-    if (filled < 0) filled = 0;
-    if (filled > width) filled = width;
 
-    string bar = color;
-    for (int i = 0; i < filled; i++) bar += "#";
-    bar += GRAY;
-    for (int i = filled; i < width; i++) bar += ".";
-    bar += RESET;
-    return bar;
-}
 
 // ==================================================================
 // [UI] 아스키 아트 - 고블린 스프라이트 출력 (HIGH QUALITY 업그레이드)
 // ==================================================================
-void printGoblinSprite(int currentHp, int maxHp) {
-    if (currentHp > maxHp / 2) {
-        // 건강한 고블린 - 날카로운 귀, 사악한 돼지 코, 철퇴와 방패로 완전 무장
-        cout << BGREEN << R"(
-                 ,      ,
-                /(.----.)\
-            |\  \/ (_) (_) \/  /|
-            | \ / ^   -   ^ \ / |
-            \( \   _/\_   / )/
-             \_, '-/  \-' ,_/
-               /   \__/   \
-               \ @ /\ @ /
-              __\ \\// // /__
-            /`   '      '    `\
-           |   (@@@)       |
-           |    ||||       |
-           |   _||||_      |
-           \_ /      \ __/
-             \_ [=||=] _/
-                ||||
-)" << RESET;
-    }
-    else {
-        // 부상당한 고블린 - X 흉터, 부서진 철퇴, 깨진 방패
-        cout << BYELLOW << R"(
-                 ,      ,
-                /(.----.)\
-            |\  \/ (_) (_) \/  /|
-            | \ / X   -   X \ / |
-            \( \   _/\_   / )/
-             \_, '-/  \-' ,_/
-               /   \__/   \
-               \ X  /\ X /
-              __\ \\// // /__
-            /`   '      '    `\
-           |   (@@ )       |
-           |    ||||       |
-           |   _||||_      |
-           \_ /      \ __/
-             \_ [_/_/_] _/
-                ||||
-)" << RESET;
-    }
-}
 
 
-// Call By Value 복사본 전달 -> 원본은 변경되지 않음
-void PreviewCritical(float attackDamage) {
-    attackDamage *= 2; // Parameter 복사본만 2배, 원본 변수는 그대로
-	cout << "크리티컬 예상 데미지: " << attackDamage << "\n";
-}
+
+
 
 // Call By Address: 주소값 전달 -> 원본 변경 가능
 void LevelUp(int* level) {
@@ -334,90 +272,10 @@ int main() {
     // # [PAGE 5] 전투 시스템
     // #####################################################
     
-    int pendingExp = 0;
-    {
-        // 생성자 호출
-        Monster goblin(50, 0, 15, 10, 50);
-    
    
-        int action;
-
-        cout << "\n";
-        cout << BRED << "  >> ====== ENEMY ENCOUNTERED ====== <<\n" << RESET;
-        printGoblinSprite(goblin.GetHp(), goblin.GetMaxHp());
-        cout << "\n";
-        cout << BGREEN << "      A wild " << BOLD << "Goblin" << RESET
-            << BGREEN << " emerges from the shadows!\n" << RESET;
-        cout << "\n";
-        Sleep(2000);
-
-        while (goblin.isAlive() && player.isAlive()) {
-            clearScreen();
-
-            cout << "\n";
-            cout << BRED << "  >> ========== BATTLE ========== <<\n" << RESET;
-
-            printGoblinSprite(goblin.GetHp(), goblin.GetMaxHp());
-
-            cout << GRAY << "  ------------------------------------------\n" << RESET;
-            cout << "   " << BGREEN << "Goblin " << RESET << makeBar(goblin.GetHp(), goblin.GetMaxHp(), 15, BGREEN)
-                << "  " << BGREEN << goblin.GetHp() << "/" << goblin.GetMaxHp() << "\n" << RESET;
-            cout << "   " << BRED << "You    " << RESET << makeBar(player.GetHp(), player.GetMaxHp(), 15, BRED)
-                << "  " << BRED << player.GetHp() << "/100\n" << RESET;
-            cout << GRAY << "  ------------------------------------------\n" << RESET;
-            cout << "\n";
-            cout << "   " << BYELLOW << "[1] Attack      [2] Critical Attack\n" << RESET;
-            cout << BYELLOW << "  > Action: " << RESET;
-            cin >> action;
-
-            if (action == 1) {
-                goblin.TakeDamage((int)player.GetAttackDamage());
-                cout << "\n";
-                cout << "   " << BYELLOW << ">> You strike the Goblin!" << RESET
-                    << RED << "  (-" << player.GetAttackDamage() << ")\n" << RESET;
-                Sleep(500);
-                if (goblin.isAlive() && player.isAlive()) {
-                    player.TakeDamage(goblin.Attack());
-                    cout << "   " << BRED << ">> The Goblin retaliates!" << RESET
-                        << RED << "  (-30)\n" << RESET;
-                    Sleep(900);
-                }
-                else {
-                    cout << "   " << BGREEN << ">> The Goblin is slain!\n" << RESET;
-                    player.TakeDamage(30);
-                    cout << "   " << BRED << ">> The Goblin attacked you!" << RESET
-                        << RED << "  (-30)\n" << RESET;
-                    Sleep(1300);
-                }
-            }
-            else if (action == 2) {
-                PreviewCritical(player.CriticalAttack());
-                goblin.TakeDamage((int)player.CriticalAttack());
-
-                cout << "\n";
-                cout << "   " << BMAGENTA << ">> CRITICAL STRIKE! " << BYELLOW << "You deal massive damage!" << RESET
-                    << RED << " (-" << player.CriticalAttack() << ")\n" << RESET;
-                Sleep(500);
-
-                if (goblin.isAlive()) {
-                    player.TakeDamage(30);
-                    cout << "   " << BRED << ">> The Goblin retaliates!" << RESET
-                        << RED << "  (-30)\n" << RESET;
-                    Sleep(900);
-                }
-                else {
-                    cout << "   " << BGREEN << ">> The Goblin is slain by your powerful blow!\n" << RESET;
-                    player.TakeDamage(goblin.Attack());
-                    cout << "   " << BRED << ">> The Goblin's final struggle hits you!" << RESET
-                        << RED << "  (-30)\n" << RESET;
-                    Sleep(1300);
-                }
-            } 
-            
-
-        }
-        pendingExp = goblin.GetExpReward(); // 몬스터 객체 소멸 전 경험치 보상 저장
-    }
+    Monster goblin(50, 0, 15, 10, 50);
+    Battle battle(player, goblin);
+    battle.Run();
     
     clearScreen();  // [TRANSITION] 페이지 전환 -> 전투 결과
 
