@@ -3,6 +3,8 @@
 #include <cstdlib>   // rand(), srand() 랜덤(주사위)를 섞는 함수
 #include <ctime>     // time() 현재 시간을 가져오는 함수
 #include <limits>    // [UI] numeric_limits - 입력 버퍼 처리용
+#include "Player.h"
+#include "Monster.h"
 
 // [UI] windows.h가 max/min을 매크로로 정의해서 std::numeric_limits::max()와 충돌함
 //      -> NOMINMAX를 먼저 정의해서 해당 매크로가 로드되지 않도록 차단
@@ -146,124 +148,11 @@ void PrintLevel(const int& level) {
 
 
 // Monster 클래스
-class Monster
-{
-    
-private:
-    int hp, maxHp;
-    int attackDamage;
-    
-public:
-    Monster(int initHp, int atk) : hp(initHp), maxHp(initHp), attackDamage(atk) 
-    {
-        cout << "[몬스터 등장!] HP :" << hp << " / ATK: " << attackDamage << "\n";
-    }
-    ~Monster()
-    {
-        cout << "[몬스터 소멸!]\n"; // 소멸자 확인용 로그
-        
-    }
-    int GetHp() const { return hp; }
-    int GetMaxHp() const { return maxHp; }
-    bool isAlive() const { return hp > 0; }
-    void TakeDamage(int damage)
-    {
-        hp -= damage;
-        if (hp < 0) hp = 0; // 음수 방지
-    }
-    int Attack()const {return attackDamage;}
-};
+
 
 
 // player 클래스
 
-class Player
-{
-private: 
-    // 기본 정보
-    string name;
-    string characterClass;
-    bool isHardcore;
-    
-    // 기본 능력치
-    int strength, dexterity, vitality, energy;
-    
-    // 파생 능력치
-    int level;
-    int hp, maxHp;
-    int mp, maxMp;
-    float attackDamage;
-    float attackSpeed;
-    double movingSpeed;
-    
-    // 저항 능력치
-    int fireResist, coldResist, lightningResist, poisonResist;
-    
-    // 인벤토리
-    int inventory[5];
-    
-public:
-    Player(const string& name, const string& characterClass, bool isHardcore) // 외부입력 값 세팅 초기화
-        : name(name), characterClass(characterClass), isHardcore(isHardcore), //단순 값 세팅 초기화
-    strength(50), dexterity(50), vitality(50), energy(50),
-    level(1),
-    fireResist(0), coldResist(0), lightningResist(0), poisonResist(0)
-    {
-        maxHp = vitality * 2; // 계산이 필요한 값 세팅 초기화
-        hp = maxHp;
-        maxMp = (int)energy * 1.5f;
-        mp = maxMp;
-        attackDamage = strength * 0.2f;
-        attackSpeed = dexterity / 10.0f;
-        movingSpeed = dexterity / 30.0f;
-        for (int i = 0; i < 5; i++) inventory[i] = 0;
-    }
-    // Getters
-    string GetName() const { return name; }
-    string GetCharacterClass() const { return characterClass; }
-    bool GetIsHardcore() const { return isHardcore; }
-    int GetStrength() const { return strength; }
-    int GetDexterity() const { return dexterity; }
-    int GetVitality() const { return vitality; }
-    int GetEnergy() const { return energy; }
-    int GetLevel() const { return level; }
-    int GetHp() const { return hp; }
-    int GetMaxHp() const { return maxHp; }
-    int GetMp() const { return maxMp; }
-    int GetMaxMp() const { return maxMp; }
-    int GetfireResist() const { return fireResist; }
-    int GetColdResist() const { return coldResist; }
-    int GetLightningResist() const { return lightningResist; }
-    int GetPoisonResist() const { return poisonResist; }
-    float GetAttackDamage() const { return attackDamage; }
-    float GetAttackSpeed() const { return attackSpeed; }
-    float GetMovingSpeed() const { return movingSpeed; }
-
-    int* GetInventory() { return inventory; }
-    
-    // 기능(함수)
-    bool isAlive() const { return hp > 0; }
-    void TakeDamage(int damage)
-    {
-        hp -= damage;
-        if (hp <= 0) hp = 0;
-    }
-    int Attack() const { return attackDamage;}
-    int CriticalAttack() const { return (int)(attackDamage * 2); }
-    void LevelUP() { level++; }
-    
-    void PreviewCritical () const
-    {
-        float preview = attackDamage * 2;
-        cout << "크리티컬 예상 데미지: " << preview << "\n";
-        
-    }
-    
-    void PrintLevel()const
-    {
-        cout << "현재레벨 : " << level << "\n";
-    }
-};
 
 
 
@@ -390,7 +279,7 @@ int main() {
     clearScreen();  // [TRANSITION] 페이지 전환 -> 캐릭터 스탯 시트
     
     // Player 객체 생성 - 입력받은 값들로 초기화, 스탯은 내부에서 자동 계산됨
-    Player player(userName, charactorClass, hardcoreInput);
+    Player player(userName, charactorClass, isHardcore);
     
     
     
@@ -616,7 +505,7 @@ int main() {
         }
 
         // 레벨업
-        player.LevelUP();
+        player.LevelUp();
         player.PrintLevel();
         cout << BYELLOW << "  ==========================================\n";
     }
