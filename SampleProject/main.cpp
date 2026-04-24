@@ -277,6 +277,8 @@ int main() {
     Battle battle(player, goblin);
     battle.Run();
     
+    
+    
     clearScreen();  // [TRANSITION] 페이지 전환 -> 전투 결과
 
     // #####################################################
@@ -342,35 +344,12 @@ int main() {
         cout << BMAGENTA << "  +---- LOOT DROPPED ----+\n" << RESET;
         Sleep(400);
 
-        int* invPtr = player.GetInventory(); //invPtr -> gameInventory 시작주소 [0]
-        
-        // 포인터로 인벤토리에 랜덤 숫자 저장
-        for (int i = 1; i <= 3; i++) {
-            *invPtr = rand() % 4 + 1; // 역참조로 현재 칸에 아이템 코드를 저장하고자 함
-            invPtr++; // 다음 칸으로 포인터 이동
-        }
+        srand((unsigned int)time(NULL));
+        player.Loot(3);
         cout << BYELLOW << "  ==========================================\n";
-           //포인터 순회로 인벤토리 출력(5칸)
-		invPtr = player.GetInventory(); // invPtr을 다시 시작주소로 초기화
-        int slot = 0;
 
-        while (invPtr < player.GetInventory() + 5) { // invPtr이 배열 끝 주소보다 작은 동안 반복
-            
-            string itemName;
-            if (*invPtr == 1) itemName = "Gold";
-            else if(*invPtr == 2) itemName = "Healing Potion";
-            else if (*invPtr == 3) itemName = "Weapon";
-            else if (*invPtr == 4) itemName = "Armor";
-			else itemName = "Empty Slot";
-
-
-            cout << " > Slot " << slot <<  " [" << itemName << "]\n";
-            invPtr++; // 다음 칸으로 포인터 이동
-            slot++;   // 슬롯 번호 증가
-        }
-
-        // 레벨업
-        player.LevelUp();
+        // 경험치 획득 + 레벨업
+        player.GainExp(goblin.GetExpReward());
         player.PrintLevel();
         cout << BYELLOW << "  ==========================================\n";
     }

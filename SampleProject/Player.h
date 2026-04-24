@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <string>
 #include <iostream>
-
+#include <vector>
 #include "Character.h"
 
 class Player : public Character
@@ -17,7 +17,7 @@ private:
     
     
     // 인벤토리
-    int inventory[5];
+    std::vector<int> inventory;
     
 public:
     Player(const std::string& name, const std::string& characterClass, bool isHardcore);
@@ -30,7 +30,7 @@ public:
     int GetExp() const { return exp; }
     int GetExpToNextLevel() const { return expToNextLevel; }
 
-    int* GetInventory() { return inventory; }
+    std::vector<int>& GetInventory() { return inventory; }
     
     // 기능(함수)
     
@@ -44,5 +44,5 @@ public:
     
     void PrintLevel()const;
     
-    
+    void Loot(int count = 3); // 빈슬롯부터 count개의 아이템 획득 -> 인벤토리에 저장 + 출력
 };
