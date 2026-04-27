@@ -1,7 +1,8 @@
 ﻿#include <iostream>
 #include <string>
-#include <cstdlib>   // rand(), srand() 랜덤(주사위)를 섞는 함수
+#include <vector>
 #include <ctime>     // time() 현재 시간을 가져오는 함수
+#include <cstdlib>   // system(), srand(), rand() 등을 위한 헤더
 #include <limits>    // [UI] numeric_limits - 입력 버퍼 처리용
 #include "Player.h"
 #include "Monster.h"
@@ -11,6 +12,8 @@
 //      -> NOMINMAX를 먼저 정의해서 해당 매크로가 로드되지 않도록 차단
 #define NOMINMAX
 #include <windows.h> // [UI] ANSI 컬러 + Sleep() 활성화용
+
+#include "FireGoblin.h"
 
 using namespace std;
 
@@ -272,10 +275,29 @@ int main() {
     // # [PAGE 5] 전투 시스템
     // #####################################################
     
-   
-    Monster goblin(50, 0, 15, 10, 50);
-    Battle battle(player, goblin);
+   vector<Monster* > monsters = {
+        new Monster("Goblin", 50, 0, 15, 10, 50),
+        new FireGoblin("FireGoblin", 50, 0, 15, 10, 50),
+        new Monster("GoldGoblin", 60, 0, 15, 10, 50),
+        new Monster("dragone", 70, 0, 15, 10, 50),
+        new Monster("zombie", 540, 0, 15, 10, 20),
+        new Monster("Andariel", 200, 0, 15, 10, 50)
+    };
+    
+    srand((unsigned int)time(NULL));
+    Battle battle(player,  monsters);
     battle.Run();
+    
+    // 메모리 해제
+    for (Monster* m : monsters) {
+        delete m;
+    }
+    
+    
+    
+    monsters.clear();
+    
+    
     
     
     
@@ -308,16 +330,16 @@ int main() {
     else {
         // [UI] 승리 연출 - 대검(Greatsword) 아스키 아트 (이전과 완벽히 동일)
         cout << BCYAN << R"(
-                      /\
-                     /  \
-                    |    |
-                    |    |
-                    |    |
-                    |    |
-                    |    |
-                    |    |
-                    |    |
-                ___/______\___)" << "\n"
+                     /\
+                    /  \
+                   |    |
+                   |    |
+                   |    |
+                   |    |
+                   |    |
+                   |    |
+                   |    |
+               ___/______\___)" << "\n"
             << BYELLOW << R"(               [____    ____]
                  \_ \  / _/
                    \_\/_/
@@ -338,18 +360,6 @@ int main() {
         cout << BYELLOW << "  ==========================================\n" << RESET;
         Sleep(700);
 
-        srand((unsigned int)time(NULL));
-
-        cout << "\n";
-        cout << BMAGENTA << "  +---- LOOT DROPPED ----+\n" << RESET;
-        Sleep(400);
-
-        srand((unsigned int)time(NULL));
-        player.Loot(3);
-        cout << BYELLOW << "  ==========================================\n";
-
-        // 경험치 획득 + 레벨업
-        player.GainExp(goblin.GetExpReward());
         player.PrintLevel();
         cout << BYELLOW << "  ==========================================\n";
     }

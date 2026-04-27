@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <string>
+#include <vector>
 #include "Monster.h"
 #include "Player.h"
 
@@ -10,12 +11,10 @@ class Battle
 {
 private:
     Player& player;
-    Monster& monster;
+    std::vector<Monster*>& monsters;
     std::string combatMessage;
-    
+
 public:
-    Battle(Player& player, Monster& monster);
+    Battle(Player& player, std::vector<Monster*>& monsters);
     bool Run();
-    
-    
 };

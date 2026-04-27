@@ -96,88 +96,89 @@ string makeBar(int current, int maxVal, int width, const string& color) {
 
 
 
-Battle::Battle(Player& player, Monster& monster)
-    : player(player), monster(monster), combatMessage("[System] Battle Started!") {}
+Battle::Battle(Player& player, vector<Monster*>& monsters)
+    : player(player), monsters(monsters), combatMessage("[System] Battle Started!") {}
 
 
 bool Battle::Run()
- 
 {
-    int pendingExp = 0;
-    int action;
+    for (Monster* monster : monsters)
+    {
+        if (!player.isAlive()) break;
 
-    cout << "\n";
-    cout << BRED << "  >> ====== ENEMY ENCOUNTERED ====== <<\n" << RESET;
-    printMonsterSprite(monster.GetHp(), monster.GetMaxHp());
-    cout << "\n";
-    cout << BGREEN << "      A wild " << BOLD << "monster" << RESET
-        << BGREEN << " emerges from the shadows!\n" << RESET;
-    cout << "\n";
-    pendingExp = monster.GetExpReward(); // 몬스터 객체 소멸 전 경험치 보상 저장
-    
-    while (monster.isAlive() && player.isAlive()) {
-        clearScreen();
+        int action;
 
         cout << "\n";
-        cout << BRED << "  >> ========== BATTLE ========== <<\n" << RESET;
-
-        printMonsterSprite(monster.GetHp(), monster.GetMaxHp());
-
-        cout << GRAY << "  ------------------------------------------\n" << RESET;
-        cout << "   " << BGREEN << "monster " << RESET << makeBar(monster.GetHp(), monster.GetMaxHp(), 15, BGREEN)
-            << "  " << BGREEN << monster.GetHp() << "/" << monster.GetMaxHp() << "\n" << RESET;
-        cout << "   " << BRED << "You    " << RESET << makeBar(player.GetHp(), player.GetMaxHp(), 15, BRED)
-            << "  " << BRED << player.GetHp() << "/100\n" << RESET;
-        cout << GRAY << "  ------------------------------------------\n" << RESET;
+        cout << BRED << "  >> ====== ENEMY ENCOUNTERED ====== <<\n" << RESET;
+        printMonsterSprite(monster->GetHp(), monster->GetMaxHp());
         cout << "\n";
-        cout << "   " << BYELLOW << "[1] Attack      [2] Critical Attack\n" << RESET;
-        cout << BYELLOW << "  > Action: " << RESET;
-        cin >> action;
+        cout << BGREEN << "      A wild " << BOLD << monster->GetName() << RESET
+            << BGREEN << " emerges from the shadows!\n" << RESET;
+        cout << "\n";
+        Sleep(1500);
 
-        if (action == 1) {
-            monster.TakeDamage((int)player.GetAttackDamage());
-            cout << "\n";
-            cout << "   " << BYELLOW << ">> You strike the monster!" << RESET
-                << RED << "  (-" << player.GetAttackDamage() << ")\n" << RESET;
-            Sleep(500);
-            if (monster.isAlive() && player.isAlive()) {
-                player.TakeDamage(monster.Attack());
-                cout << "   " << BRED << ">> The monster retaliates!" << RESET
-                    << RED << "  (-30)\n" << RESET;
-                Sleep(900);
-            }
-            else {
-                cout << "   " << BGREEN << ">> The monster is slain!\n" << RESET;
-                player.TakeDamage(30);
-                cout << "   " << BRED << ">> The monster attacked you!" << RESET
-                    << RED << "  (-30)\n" << RESET;
-                Sleep(1300);
-            }
-        }
-        else if (action == 2) {
-            PreviewCritical(player.CriticalAttack());
-            monster.TakeDamage((int)player.CriticalAttack());
+        while (monster->isAlive() && player.isAlive()) {
+            clearScreen();
 
             cout << "\n";
-            cout << "   " << BMAGENTA << ">> CRITICAL STRIKE! " << BYELLOW << "You deal massive damage!" << RESET
-                << RED << " (-" << player.CriticalAttack() << ")\n" << RESET;
-            Sleep(500);
+            cout << BRED << "  >> ========== BATTLE ========== <<\n" << RESET;
+            printMonsterSprite(monster->GetHp(), monster->GetMaxHp());
 
-            if (monster.isAlive()) {
-                player.TakeDamage(30);
-                cout << "   " << BRED << ">> The monster retaliates!" << RESET
-                    << RED << "  (-30)\n" << RESET;
-                Sleep(900);
+            cout << GRAY << "  ------------------------------------------\n" << RESET;
+            cout << "   " << BGREEN << monster->GetName() << " " << RESET
+                << makeBar(monster->GetHp(), monster->GetMaxHp(), 15, BGREEN)
+                << "  " << BGREEN << monster->GetHp() << "/" << monster->GetMaxHp() << "\n" << RESET;
+            cout << "   " << BRED << "You    " << RESET
+                << makeBar(player.GetHp(), player.GetMaxHp(), 15, BRED)
+                << "  " << BRED << player.GetHp() << "/" << player.GetMaxHp() << "\n" << RESET;
+            cout << GRAY << "  ------------------------------------------\n" << RESET;
+            cout << "\n";
+            cout << "   " << BYELLOW << "[1] Attack      [2] Critical Attack\n" << RESET;
+            cout << BYELLOW << "  > Action: " << RESET;
+            cin >> action;
+
+            if (action == 1) {
+                monster->TakeDamage((int)player.GetAttackDamage());
+                cout << "\n";
+                cout << "   " << BYELLOW << ">> You strike the " << monster->GetName() << "!" << RESET
+                    << RED << "  (-" << player.GetAttackDamage() << ")\n" << RESET;
+                Sleep(500);
+                if (monster->isAlive()) {
+                    player.TakeDamage(monster->Attack());
+                    cout << "   " << BRED << ">> The " << monster->GetName() << " retaliates!" << RESET
+                        << RED << "  (-" << monster->Attack() << ")\n" << RESET;
+                    Sleep(900);
+                }
+                else {
+                    cout << "   " << BGREEN << ">> " << monster->GetName() << " is slain!\n" << RESET;
+                    Sleep(1300);
+                }
             }
-            else {
-                cout << "   " << BGREEN << ">> The monster is slain by your powerful blow!\n" << RESET;
-                player.TakeDamage(monster.Attack());
-                cout << "   " << BRED << ">> The monster's final struggle hits you!" << RESET
-                    << RED << "  (-30)\n" << RESET;
-                Sleep(1300);
+            else if (action == 2) {
+                int crit = player.CriticalAttack();
+                monster->TakeDamage(crit);
+                cout << "\n";
+                cout << "   " << BMAGENTA << ">> CRITICAL STRIKE! " << BYELLOW << "You deal massive damage!" << RESET
+                    << RED << " (-" << crit << ")\n" << RESET;
+                Sleep(500);
+
+                if (monster->isAlive()) {
+                    player.TakeDamage(monster->Attack());
+                    cout << "   " << BRED << ">> The " << monster->GetName() << " retaliates!" << RESET
+                        << RED << "  (-" << monster->Attack() << ")\n" << RESET;
+                    Sleep(900);
+                }
+                else {
+                    cout << "   " << BGREEN << ">> " << monster->GetName() << " is slain by your powerful blow!\n" << RESET;
+                    Sleep(1300);
+                }
             }
         }
 
+        if (!monster->isAlive()) {
+            player.GainExp(monster->GetExpReward());
+            player.Loot(1);
+        }
     }
     return player.isAlive();
 }
