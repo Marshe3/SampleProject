@@ -13,7 +13,9 @@
 #define NOMINMAX
 #include <windows.h> // [UI] ANSI 컬러 + Sleep() 활성화용
 
+#include "Barbarian.h"
 #include "FireGoblin.h"
+#include "Sorceress.h"
 
 using namespace std;
 
@@ -220,9 +222,12 @@ int main() {
 
     clearScreen();  // [TRANSITION] 페이지 전환 -> 캐릭터 스탯 시트
     
-    // Player 객체 생성 - 입력받은 값들로 초기화, 스탯은 내부에서 자동 계산됨
-    Player player(userName, charactorClass, isHardcore);
-    
+    // Player 직업에 따라 자식 클래스를 생성
+    Player* playerPtr = nullptr;
+    if (classChoiceInput == 3) playerPtr = new Barbarian(userName, isHardcore);
+    else if (classChoiceInput == 7) playerPtr = new Sorceress(userName, isHardcore);
+    else playerPtr = new Player(userName, charactorClass, isHardcore);
+    Player& player = *playerPtr;
     
     
     // #####################################################
@@ -292,7 +297,7 @@ int main() {
     for (Monster* m : monsters) {
         delete m;
     }
-    
+    delete playerPtr; 
     
     
     monsters.clear();

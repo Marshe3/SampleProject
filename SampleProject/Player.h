@@ -22,7 +22,12 @@ private:
 public:
     Player(const std::string& name, const std::string& characterClass, bool isHardcore);
     
-   
+protected:
+    // 자식 클래스(바바리안, 소서리스 등) 이 스탯을 직접 지정할떄 사용되는 생성자
+    Player(const std::string& name, const std::string& characterClass, bool isHardcore
+        , int str, int dex, int vit, int eng);
+    
+   public:
     // Getters
     std::string GetName() const { return name; }
     std::string GetCharacterClass() const { return characterClass; }
@@ -37,7 +42,7 @@ public:
     
     void GainExp(int amount);
     void LevelUp();
-
+    virtual std::string GetAttackMessage()const { return ""; }
     void PreviewCritical() const;
 
     int CriticalAttack() const;
