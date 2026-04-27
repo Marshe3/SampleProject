@@ -9,7 +9,7 @@ private:
 
 public:
     Monster(const std::string& name,int str, int dex, int vit, int eng, int expReward, int lv = 1);
-    
+    virtual ~Monster();
     std::string GetName() const { return name; }
     int GetExpReward() const { return expReward; }
     
