@@ -7,7 +7,7 @@
 #include "Player.h"
 #include "Monster.h"
 #include "Battle.h"
-
+#include <memory>
 // [UI] windows.h가 max/min을 매크로로 정의해서 std::numeric_limits::max()와 충돌함
 //      -> NOMINMAX를 먼저 정의해서 해당 매크로가 로드되지 않도록 차단
 #define NOMINMAX
@@ -223,10 +223,10 @@ int main() {
     clearScreen();  // [TRANSITION] 페이지 전환 -> 캐릭터 스탯 시트
     
     // Player 직업에 따라 자식 클래스를 생성
-    Player* playerPtr = nullptr;
-    if (classChoiceInput == 3) playerPtr = new Barbarian(userName, isHardcore);
-    else if (classChoiceInput == 7) playerPtr = new Sorceress(userName, isHardcore);
-    else playerPtr = new Player(userName, charactorClass, isHardcore);
+    unique_ptr<Player> playerPtr;
+    if (classChoiceInput == 3) playerPtr = make_unique<Barbarian>(userName, isHardcore);
+    else if (classChoiceInput == 7) playerPtr = make_unique<Sorceress>(userName, isHardcore);
+    else playerPtr = make_unique<Player>(userName, charactorClass, isHardcore);
     Player& player = *playerPtr;
     
     
@@ -280,27 +280,27 @@ int main() {
     // # [PAGE 5] 전투 시스템
     // #####################################################
     
-   vector<Monster* > monsters = {
-        new Monster("Goblin", 50, 0, 15, 10, 50),
-        new FireGoblin("FireGoblin", 50, 0, 15, 10, 50),
-        new Monster("GoldGoblin", 60, 0, 15, 10, 50),
-        new Monster("dragone", 70, 0, 15, 10, 50),
-        new Monster("zombie", 540, 0, 15, 10, 20),
-        new Monster("Andariel", 200, 0, 15, 10, 50)
-    };
+   vector<unique_ptr<Monster>> monsters;
+        monsters.push_back(make_unique<Monster>("Goblin", 50, 0, 15, 10, 50));
+         monsters.push_back(make_unique<FireGoblin>("FireGoblin", 50, 0, 15, 10, 50));
+        monsters.push_back(make_unique<Monster>("GoldGoblin", 60, 0, 15, 10, 50));
+        monsters.push_back(make_unique<Monster>("dragone", 70, 0, 15, 10, 50));
+       monsters.push_back(make_unique<Monster>("zombie", 540, 0, 15, 10, 20));
+        monsters.push_back(make_unique<Monster>("Andariel", 200, 0, 15, 10, 50));
     
     srand((unsigned int)time(NULL));
-    Battle battle(player,  monsters);
+    vector<Monster*> monsterPtrs;
+    for (auto& m : monsters) {
+        monsterPtrs.push_back(m.get());
+    }
+
+    Battle battle(player, monsterPtrs);
     battle.Run();
     
-    // 메모리 해제
-    for (Monster* m : monsters) {
-        delete m;
-    }
-    delete playerPtr; 
+   
     
     
-    monsters.clear();
+   
     
     
     
@@ -369,6 +369,7 @@ int main() {
         cout << BYELLOW << "  ==========================================\n";
     }
 
+    player.PrintInventory();
     cout << "\n";
 
     waitForEnter();

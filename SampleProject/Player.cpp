@@ -2,6 +2,8 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+
+#include "Item.h"
 using namespace std;
 
 Player::Player(const string& name, const string& characterClass, bool isHardcore)
@@ -48,23 +50,26 @@ void Player::GainExp(int amount)
 }
 void Player::Loot(int count)
 {
-    // count개 아이템을 vector에 추가
-    for (int i = 0; i <count; i++)
+    for (int i = 0; i < count; ++i) {
+        Loot(make_unique<Item>("Gold Coin", ItemType::Consumeable));
+    }
+}
+
+void Player::Loot(unique_ptr<Item> item)
+{
+    cout << "[획득]" << item->name << "\n";
+    inventory.push_back(*item);
+}
+
+void Player::PrintInventory() const {
+    cout << "||" << left << setw(46) << " Inventory" << "\n";
+    for (int i = 0; i < inventory.size(); i++)
     {
-        // 랜덤 숫자 1개씩 인벤토리에 벡터에 넣음
-        inventory.push_back(rand() % 4 + 1);
-        for (int j = 0; j <inventory.size(); j++)
-        {
-            string itemName;
-            if (inventory[i] == 1) itemName = "Gold";
-            else if(inventory[i] == 2) itemName = "Healing Potion";
-            else if (inventory[i] == 3) itemName = "Weapon";
-            else if (inventory[i] == 4) itemName = "Armor";
-            else itemName = "Empty Slot";
+        string typeStr;
+        if (inventory[i].type == ItemType::Weapon) typeStr = "Weapon";
+        else if (inventory[i].type == ItemType::Armor) typeStr = "Armor";
+        else typeStr = "Consumable";
 
-
-            cout << " > Slot " << i <<  " [" << itemName << "]\n";
-        }
-        
+        cout << " > Slot " << i << " [" << inventory[i].name << "] (" << typeStr << ")\n";
     }
 }

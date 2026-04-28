@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 #include "Character.h"
+#include "Item.h"
+#include <memory>
 
 class Player : public Character
 {
@@ -17,7 +19,7 @@ private:
     
     
     // 인벤토리
-    std::vector<int> inventory;
+    std::vector<Item> inventory;
     
 public:
     Player(const std::string& name, const std::string& characterClass, bool isHardcore);
@@ -35,7 +37,7 @@ protected:
     int GetExp() const { return exp; }
     int GetExpToNextLevel() const { return expToNextLevel; }
 
-    std::vector<int>& GetInventory() { return inventory; }
+    std::vector<Item>& GetInventory() { return inventory; }
     
     // 기능(함수)
     
@@ -49,5 +51,7 @@ protected:
     
     void PrintLevel()const;
     
-    void Loot(int count = 3); // 빈슬롯부터 count개의 아이템 획득 -> 인벤토리에 저장 + 출력
+    void Loot(int count); // Battle.cpp expects this
+    void Loot(std::unique_ptr<Item> item) ; // Original one in Player.cpp
+    void PrintInventory() const;
 };
