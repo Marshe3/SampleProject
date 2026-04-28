@@ -7,3 +7,4 @@ int Sorceress::Attack() const
 {
     return (int)(energy * 0.8f);
 }
+

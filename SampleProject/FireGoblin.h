@@ -11,7 +11,7 @@ public:
     
     int Attack() const override;
     std::string GetAttackMessage() const override { return "[Fire Enhanced Attack!]"; }
-    
+    std::unique_ptr<Item> Drop() const override;
     
 
 };
