@@ -12,7 +12,7 @@
 //      -> NOMINMAX를 먼저 정의해서 해당 매크로가 로드되지 않도록 차단
 #define NOMINMAX
 #include <windows.h> // [UI] ANSI 컬러 + Sleep() 활성화용
-
+#include "Mercenary.h"
 #include "Barbarian.h"
 #include "FireGoblin.h"
 #include "Sorceress.h"
@@ -223,10 +223,10 @@ int main() {
     clearScreen();  // [TRANSITION] 페이지 전환 -> 캐릭터 스탯 시트
     
     // Player 직업에 따라 자식 클래스를 생성
-    unique_ptr<Player> playerPtr;
-    if (classChoiceInput == 3) playerPtr = make_unique<Barbarian>(userName, isHardcore);
-    else if (classChoiceInput == 7) playerPtr = make_unique<Sorceress>(userName, isHardcore);
-    else playerPtr = make_unique<Player>(userName, charactorClass, isHardcore);
+    shared_ptr<Player> playerPtr;
+    if (classChoiceInput == 3) playerPtr = make_shared<Barbarian>(userName, isHardcore);
+    else if (classChoiceInput == 7) playerPtr = make_shared<Sorceress>(userName, isHardcore);
+    else playerPtr = make_shared<Player>(userName, charactorClass, isHardcore);
     Player& player = *playerPtr;
     
     
@@ -275,7 +275,14 @@ int main() {
 
     waitForEnter();
     clearScreen();  // [TRANSITION] 페이지 전환 -> 전투
-
+    
+    shared_ptr<Mercenary> mercenary= make_shared<Mercenary> ("Rogue", 12, playerPtr);
+    player.companion = mercenary;  // Player -> Mercenary 연결 (순환 참조)
+    cout << "[use_count] playerPtr 참조 수 :" << playerPtr.use_count() << endl; 
+    cout << "[use_count] mercenary 참조 수 :" << mercenary.use_count() << endl;
+    // 서로 참조하고 있어서 소멸자가 안나타남
+    
+    
     // #####################################################
     // # [PAGE 5] 전투 시스템
     // #####################################################
@@ -294,7 +301,7 @@ int main() {
         monsterPtrs.push_back(m.get());
     }
 
-    Battle battle(player, monsterPtrs);
+    Battle battle(player, monsterPtrs, mercenary);
     battle.Run();
     
    

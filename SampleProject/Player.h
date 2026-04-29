@@ -6,6 +6,8 @@
 #include "Item.h"
 #include <memory>
 
+class Mercenary; // 전방 선언
+
 class Player : public Character
 {
 private: 
@@ -38,6 +40,9 @@ protected:
     int GetExpToNextLevel() const { return expToNextLevel; }
 
     std::vector<Item>& GetInventory() { return inventory; }
+    
+    // 플레이어-> 용병 참조
+    std::shared_ptr<Mercenary> companion();
     
     // 기능(함수)
     

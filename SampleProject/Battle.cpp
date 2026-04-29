@@ -4,6 +4,8 @@
 #include <iostream>
 #define NOMINMAX
 #include <windows.h>
+
+#include "Mercenary.h"
 using namespace std;
 
 #define RESET    "\033[0m"
@@ -96,7 +98,7 @@ string makeBar(int current, int maxVal, int width, const string& color) {
 
 
 
-Battle::Battle(Player& player, vector<Monster*>& monsters)
+Battle::Battle(Player& player, vector<Monster*>& monsters, shared_ptr<Mercenary> mercenary) {}
     : player(player), monsters(monsters), combatMessage("[System] Battle Started!") {}
 
 
@@ -143,6 +145,12 @@ bool Battle::Run()
                 cout << "   " << BYELLOW << ">> You strike the " << monster->GetName() << "!" << RESET
                     << RED << "  (-" << player.GetAttackDamage() << ")\n" << RESET;
                 Sleep(500);
+                if (mercenary && monster->isAlive())
+                {
+                    int mercDmg = mercenary -> Attack();
+                    monster->TakeDamage((int)mercDmg);
+                    combatMessage += "\n=> [" + mercenary->name +  "] attacked! (Dmg: " + to_string(mercDmg) + ")";
+                }
                 if (monster->isAlive()) {
                     player.TakeDamage(monster->Attack());
                     cout << "   " << BRED << ">> The " << monster->GetName() << " retaliates!" << RESET
@@ -161,7 +169,14 @@ bool Battle::Run()
                 cout << "   " << BMAGENTA << ">> CRITICAL STRIKE! " << BYELLOW << "You deal massive damage!" << RESET
                     << RED << " (-" << crit << ")\n" << RESET;
                 Sleep(500);
-
+                
+                if (mercenary && monster->isAlive())
+                {
+                    int mercDmg = mercenary -> Attack();
+                    monster->TakeDamage((int)mercDmg);
+                    combatMessage += "\n=> [" + mercenary->name +  "] attacked! (Dmg: " + to_string(mercDmg) + ")";
+                }
+                
                 if (monster->isAlive()) {
                     player.TakeDamage(monster->Attack());
                     cout << "   " << BRED << ">> The " << monster->GetName() << " retaliates!" << RESET
