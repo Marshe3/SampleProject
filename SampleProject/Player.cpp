@@ -10,11 +10,19 @@ Player::Player(const string& name, const string& characterClass, bool isHardcore
     : Character(50, 50, 50, 50, 1),
     // 단순 값 세팅 초기화
     name(name), characterClass(characterClass), isHardcore(isHardcore),
-    exp(0), expToNextLevel(100){}
-    
+    exp(0), expToNextLevel(100)
+{
+    inventory.reserve(6);  // 재할당에 따른 복사 (Reallocation)을 방지하기 위해서 미리 capacity 확보
+}    
+
+
+
 Player::Player(const string& name, const string& characterClass, bool isHardcore
     , int str, int dex, int vit, int eng)
-: Character(str, dex, vit, eng, 1), exp(0), expToNextLevel(100) {}
+: Character(str, dex, vit, eng, 1), exp(0), expToNextLevel(100)
+{
+    inventory.reserve(6);
+}
 
 void Player::LevelUp()
 {
@@ -52,6 +60,7 @@ void Player::Loot(int count)
 {
     for (int i = 0; i < count; ++i) {
         Loot(make_unique<Item>("Gold Coin", ItemType::Consumeable));
+        cout << "[인벤토리] size = " << inventory.size() << " capacity = " << inventory.capacity() << "\n";
     }
 }
 
