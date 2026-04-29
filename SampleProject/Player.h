@@ -42,7 +42,7 @@ protected:
     std::vector<Item>& GetInventory() { return inventory; }
     
     // 플레이어-> 용병 참조
-    std::shared_ptr<Mercenary> companion();
+    std::shared_ptr<Mercenary> companion;
     
     // 기능(함수)
     

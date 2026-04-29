@@ -98,8 +98,8 @@ string makeBar(int current, int maxVal, int width, const string& color) {
 
 
 
-Battle::Battle(Player& player, vector<Monster*>& monsters, shared_ptr<Mercenary> mercenary) {}
-    : player(player), monsters(monsters), combatMessage("[System] Battle Started!") {}
+Battle::Battle(Player& player, vector<Monster*>& monsters, shared_ptr<Mercenary> mercenary) 
+    : player(player), monsters(monsters),mercenary(mercenary),  combatMessage("[System] Battle Started!") {}
 
 
 bool Battle::Run()
