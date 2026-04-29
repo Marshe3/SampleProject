@@ -56,7 +56,7 @@ void Player::GainExp(int amount)
         cout << "[레벨 업!]" << level << "\n";
     }
 }
-void Player::Loot(int count)
+void Player::Loot(Item item)
 {
     for (int i = 0; i < count; ++i) {
         Loot(make_unique<Item>("Gold Coin", ItemType::Consumeable));
@@ -67,18 +67,20 @@ void Player::Loot(int count)
 void Player::Loot(unique_ptr<Item> item)
 {
     cout << "[획득]" << item->name << "\n";
-    inventory.push_back(*item);
+    inventory.emplace_back(std::move(item));
+    
 }
-
+    int i = 1;
+// Range-based for 문 | const auto&
 void Player::PrintInventory() const {
     cout << "||" << left << setw(46) << " Inventory" << "\n";
-    for (int i = 0; i < inventory.size(); i++)
+    for (const auto& item : inventory)
     {
         string typeStr;
-        if (inventory[i].type == ItemType::Weapon) typeStr = "Weapon";
-        else if (inventory[i].type == ItemType::Armor) typeStr = "Armor";
+        if (item.type == ItemType::Weapon) typeStr = "Weapon";
+        else if (item.type == ItemType::Armor) typeStr = "Armor";
         else typeStr = "Consumable";
 
-        cout << " > Slot " << i << " [" << inventory[i].name << "] (" << typeStr << ")\n";
+        cout << " > Slot " << i++ << " [" << item.name << "] (" << typeStr << ")\n";
     }
 }

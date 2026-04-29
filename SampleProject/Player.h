@@ -56,7 +56,7 @@ protected:
     
     void PrintLevel()const;
     
-    void Loot(int count); // Battle.cpp expects this
+    void Loot(Item item); // Battle.cpp expects this
     void Loot(std::unique_ptr<Item> item) ; // Original one in Player.cpp
     void PrintInventory() const;
 };

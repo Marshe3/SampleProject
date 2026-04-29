@@ -280,7 +280,7 @@ int main() {
     player.companion = mercenary;  // Player -> Mercenary 연결 (순환 참조)
     cout << "[use_count] playerPtr 참조 수 :" << playerPtr.use_count() << endl; 
     cout << "[use_count] mercenary 참조 수 :" << mercenary.use_count() << endl;
-    // 서로 참조하고 있어서 소멸자가 안나타남
+    // 서로 참조하고 있어서 소멸자가 안나타남 
     
     
     // #####################################################
