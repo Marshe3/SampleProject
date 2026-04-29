@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include <iostream>
 class Character
 {
 protected:
@@ -44,4 +44,5 @@ public:
     void TakeDamage(int damage);
     
     virtual int Attack() const;
+    void Heal(int amount) { hp = std::min(hp + amount, maxHp);} // HP(힐량만큼) 회복, maxHp 초과 불가
 };

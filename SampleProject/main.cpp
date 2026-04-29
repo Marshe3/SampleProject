@@ -300,7 +300,7 @@ int main() {
     for (auto& m : monsters) {
         monsterPtrs.push_back(m.get());
     }
-
+    
     Battle battle(player, monsterPtrs, mercenary);
     battle.Run();
     

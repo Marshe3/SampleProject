@@ -58,5 +58,6 @@ protected:
     
     void Loot(Item item); // Battle.cpp expects this
     void Loot(std::unique_ptr<Item> item) ; // Original one in Player.cpp
+    bool UseItem(const std::string& itemName); // 아이템 사용 -> 인벤토리에서 제거 (없으면 false)
     void PrintInventory() const;
 };

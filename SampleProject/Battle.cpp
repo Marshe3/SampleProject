@@ -145,7 +145,7 @@ bool Battle::Run()
                 << "  " << BRED << player.GetHp() << "/" << player.GetMaxHp() << "\n" << RESET;
             cout << GRAY << "  ------------------------------------------\n" << RESET;
             cout << "\n";
-            cout << "   " << BYELLOW << "[1] Attack      [2] Critical Attack\n" << RESET;
+            cout << "   " << BYELLOW << "[1] Attack      [2] Critical Attack      [3] Healing Potion\n" << RESET;
             cout << BYELLOW << "  > Action: " << RESET;
             cin >> action;
 
@@ -192,6 +192,16 @@ bool Battle::Run()
                     cout << "   " << BRED << ">> The " << monster->GetName() << " retaliates!" << RESET
                         << RED << "  (-" << monster->Attack() << ")\n" << RESET;
                     Sleep(900);
+                }
+                else if (action == 3)
+                {
+                    if (player.UseItem("Healing Potion"))
+                    {
+                        combatMessage = "=> Healing Potion을 사용했습니다" + to_string(player.GetHp()) + "/" + to_string(player.GetMaxHp());
+                    }else
+                    {
+                        combatMessage = "=> Healing Potion이 없습니다" ;
+                    }
                 }
                 else {
                     cout << "   " << BGREEN << ">> " << monster->GetName() << " is slain by your powerful blow!\n" << RESET;
