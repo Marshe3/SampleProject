@@ -15,6 +15,6 @@ public:
     ~Mercenary();
     
     int Attack() const { return attackDamage; }
-    bool IsOwnerAlive() const { return owner.expired(); } // 주인이 살아 있는지 확인
+    bool IsOwnerAlive() const { return !owner.expired(); } // 주인이 살아 있는지 확인
     
 };
