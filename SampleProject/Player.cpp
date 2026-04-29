@@ -56,7 +56,7 @@ void Player::GainExp(int amount)
         cout << "[레벨 업!]" << level << "\n";
     }
 }
-void Player::Loot(Item item)
+void Player::Loot(int count)
 {
     for (int i = 0; i < count; ++i) {
         Loot(make_unique<Item>("Gold Coin", ItemType::Consumeable));
@@ -67,13 +67,14 @@ void Player::Loot(Item item)
 void Player::Loot(unique_ptr<Item> item)
 {
     cout << "[획득]" << item->name << "\n";
-    inventory.emplace_back(std::move(item));
+    inventory.push_back(*item);
     
 }
-    int i = 1;
+
 // Range-based for 문 | const auto&
 void Player::PrintInventory() const {
     cout << "||" << left << setw(46) << " Inventory" << "\n";
+    int i = 1;
     for (const auto& item : inventory)
     {
         string typeStr;
@@ -92,7 +93,7 @@ bool Player::UseItem(const string& itemName)
     {
         if (it->name == itemName)
         {
-            if (it->type == itemType:: Consumable)
+            if (it->type == ItemType::Consumeable)
             {
                 Heal(maxHp); // 전체회복
             }
@@ -101,4 +102,5 @@ bool Player::UseItem(const string& itemName)
             return true;
         }
     }
+    return false;
 } 
